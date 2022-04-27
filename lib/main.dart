@@ -21,12 +21,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
       getPages: AppPages.pages,
       initialRoute: AppRoutes.initial,
       theme: LightTheme().getThemeData(context),
       darkTheme: DarkTheme().getThemeData(context),
       defaultTransition: Transition.circularReveal,
+      locale: const Locale("pt", "BR"),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
