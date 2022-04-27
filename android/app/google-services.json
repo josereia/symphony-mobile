@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "819828396310",
+    "project_id": "symphony-61682",
+    "storage_bucket": "symphony-61682.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819828396310:android:912e058b645bdc735c0037",
+        "android_client_info": {
+          "package_name": "br.com.jotaon.symphony"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819828396310-sa88hv3g91phcon18cgmjndqd4th5kn8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.jotaon.symphony",
+            "certificate_hash": "90cec3cb99d1990e68edbd68af0e3526486e1663"
+          }
+        },
+        {
+          "client_id": "819828396310-me5386i5c2v6pvtfu7vi1uvptahdjkrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDx-jCpKmFKB5E56LvIO42sNgKaoBNuwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819828396310-me5386i5c2v6pvtfu7vi1uvptahdjkrr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "819828396310-bp7g3ebms8jlr68vrtujr852ugkg5acn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.jotaon.sym"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
