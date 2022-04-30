@@ -5,21 +5,28 @@ import 'package:symphony/controller/widgets/pass_input_controller.dart';
 
 class PassInput extends StatelessWidget {
   final controller = Get.put(PassInputController());
-
+  final Function onChanged;
+  final Function validator;
   final String hintText;
+  final TextInputAction? textInputAction;
 
   PassInput({
     Key? key,
     required this.hintText,
+    required this.onChanged,
+    required this.validator,
+    this.textInputAction,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => TextField(
+      () => TextFormField(
         keyboardType: TextInputType.visiblePassword,
         style: Theme.of(context).textTheme.bodyText1?.copyWith(),
         obscureText: controller.isObscure.value,
+        onChanged: (value) => onChanged(value),
+        textInputAction: textInputAction,
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: const Icon(FeatherIcons.lock),
@@ -30,6 +37,7 @@ class PassInput extends StatelessWidget {
             onPressed: () => controller.changeObscure(),
           ),
         ),
+        validator: (value) => validator(value),
       ),
     );
   }

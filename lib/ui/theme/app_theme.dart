@@ -17,7 +17,7 @@ class LightTheme {
         filled: true,
         fillColor: const Color(0xffDDDDDD),
         hintStyle: const TextStyle(color: Colors.black),
-        constraints: const BoxConstraints(maxHeight: 50),
+        constraints: const BoxConstraints(minHeight: 50),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),

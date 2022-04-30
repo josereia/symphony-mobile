@@ -5,6 +5,9 @@ class TextInput extends StatelessWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final VoidCallback? suffixIconOnPressed;
+  final Function onChanged;
+  final Function? validator;
+  final TextInputAction? textInputAction;
   final String hintText;
 
   const TextInput({
@@ -13,14 +16,19 @@ class TextInput extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.suffixIconOnPressed,
+    this.validator,
+    this.textInputAction,
+    required this.onChanged,
     required this.hintText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       keyboardType: inputType ?? TextInputType.text,
+      textInputAction: textInputAction,
       style: Theme.of(context).textTheme.bodyText1?.copyWith(),
+      onChanged: (value) => onChanged(value),
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
@@ -31,6 +39,7 @@ class TextInput extends StatelessWidget {
               )
             : null,
       ),
+      validator: validator != null ? (value) => validator!(value) : null,
     );
   }
 }

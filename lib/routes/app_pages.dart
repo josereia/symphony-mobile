@@ -14,12 +14,12 @@ class AppPages {
   static final pages = [
     GetPage(
       name: AppRoutes.initial,
-      page: () => const LoginPage(),
+      page: () => LoginPage(),
       binding: LoginBinding(),
     ),
     GetPage(
       name: AppRoutes.login,
-      page: () => const LoginPage(),
+      page: () => LoginPage(),
       binding: LoginBinding(),
     ),
     GetPage(
