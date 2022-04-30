@@ -17,14 +17,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       getPages: AppPages.pages,
       initialRoute: AppRoutes.initial,
       theme: LightTheme().getThemeData(context),
-      darkTheme: DarkTheme().getThemeData(context),
+      //darkTheme: DarkTheme().getThemeData(context),
       defaultTransition: Transition.circularReveal,
       locale: const Locale("pt", "BR"),
       debugShowCheckedModeBanner: false,
