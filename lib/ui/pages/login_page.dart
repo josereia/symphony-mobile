@@ -10,7 +10,7 @@ import 'package:symphony/ui/widgets/buttons/primary_button.dart';
 import 'package:symphony/ui/widgets/text_input.dart';
 
 class LoginPage extends GetView<LoginController> {
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

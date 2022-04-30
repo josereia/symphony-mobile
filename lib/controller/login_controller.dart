@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:developer';
+import 'package:symphony/data/repository/user_repository.dart';
 
 class LoginController extends GetxController {
+  final UserRepository repository;
+
   final GlobalKey formKey = GlobalKey<FormState>();
   final RxString email = "".obs;
   final RxString password = "".obs;
+
+  LoginController({required this.repository});
 
   String? validateEmail(String value) {
     if (GetUtils.isEmail(value)) {
@@ -28,10 +32,20 @@ class LoginController extends GetxController {
   }
 
   void loginWithEmailAndPass() {
-    log(email.toString());
+    repository.loginWithEmailAndPass(email, password);
   }
 
-  void loginWithGoogle() {}
-  void loginWithApple() {}
+  void loginWithGoogle() {
+    repository.loginWithGoogle();
+  }
+
+  void loginWithApple() {
+    repository.loginWithApple();
+  }
+
+  void logOut() {
+    repository.logOut();
+  }
+
   void resetPass() {}
 }
