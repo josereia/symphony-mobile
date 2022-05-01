@@ -58,7 +58,7 @@ class LoginPage extends GetView<LoginController> {
                             hintText: "Senha",
                             textInputAction: TextInputAction.done,
                             onChanged: (value) =>
-                                controller.email.value = value,
+                                controller.password.value = value,
                             validator: (value) =>
                                 controller.validatePassword(value),
                           ),

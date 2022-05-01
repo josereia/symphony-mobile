@@ -5,7 +5,7 @@ class UserRepository {
 
   UserRepository({required this.provider});
 
-  void loginWithEmailAndPass(email, password) {
+  void loginWithEmailAndPass(String email, String password) {
     provider.loginWithEmailAndPass(email, password);
   }
 

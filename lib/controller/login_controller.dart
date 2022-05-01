@@ -12,10 +12,8 @@ class LoginController extends GetxController {
   LoginController({required this.repository});
 
   String? validateEmail(String value) {
-    if (GetUtils.isEmail(value)) {
+    if (value.isEmpty) {
       return "Este campo não pode estar vazio!";
-    } else if (value.isEmail) {
-      return "Email inválido!";
     }
 
     return null;
@@ -32,7 +30,7 @@ class LoginController extends GetxController {
   }
 
   void loginWithEmailAndPass() {
-    repository.loginWithEmailAndPass(email, password);
+    repository.loginWithEmailAndPass(email.value, password.value);
   }
 
   void loginWithGoogle() {

@@ -38,7 +38,7 @@ class AuthProvider extends GetxController {
     super.onReady();
   }
 
-  void loginWithEmailAndPass(email, password) async {
+  void loginWithEmailAndPass(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
