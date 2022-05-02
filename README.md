@@ -2,7 +2,7 @@
 
 Um music player inspirado no spotify, deezer e apple music. Tecnologias: Flutter, Getx e Firebase.
 
-A music player via streaming like Spotify and Deezer.
+###### A music player via streaming like Spotify and Deezer.
 
 ## Netlify
 
