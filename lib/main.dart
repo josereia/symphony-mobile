@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.login,
       initialBinding: FirebaseBinding(),
       theme: LightTheme().getThemeData(),
-      //darkTheme: DarkTheme().getThemeData(context),
+      darkTheme: DarkTheme().getThemeData(),
       locale: const Locale("pt", "BR"),
       debugShowCheckedModeBanner: false,
     );

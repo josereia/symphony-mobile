@@ -25,7 +25,6 @@ class LoginPage extends GetView<LoginController> {
               padding: const EdgeInsets.all(16),
               alignment: Alignment.center,
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     GoogleButton(

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:symphony/controller/home_controller.dart';
 import 'package:symphony/ui/widgets/buttons/primary_button.dart';
 import 'package:symphony/ui/widgets/header_widget.dart';
+import 'package:symphony/ui/widgets/lists/album_list.dart';
+import 'package:symphony/ui/widgets/lists/song_list.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({Key? key}) : super(key: key);
@@ -31,14 +33,26 @@ class HomePage extends GetView<HomeController> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text("Home"),
-            PrimaryButton(title: "Sair", onPressed: () => controller.logOut())
-          ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SongList(
+                title: "Recomendados",
+              ),
+              const SizedBox(height: 16),
+              const AlbumList(
+                title: "Alguns álbuns",
+              ),
+              const SizedBox(height: 16),
+              const SongList(
+                title: "Você não para de ouvir",
+              ),
+              const SizedBox(height: 16),
+              PrimaryButton(title: "Sair", onPressed: () => controller.logOut())
+            ],
+          ),
         ),
       ),
     );

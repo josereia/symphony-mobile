@@ -22,16 +22,19 @@ class RootPage extends GetView<RootController> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: controller.tabIndex.value,
-        onTap: (index) => controller.changeTabIndex(index),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(FeatherIcons.home), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.search), label: "Buscar"),
-          BottomNavigationBarItem(
-              icon: Icon(FeatherIcons.bookOpen), label: "Biblioteca"),
-        ],
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          currentIndex: controller.tabIndex.value,
+          onTap: (index) => controller.changeTabIndex(index),
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(FeatherIcons.home), label: "Home"),
+            BottomNavigationBarItem(
+                icon: Icon(FeatherIcons.search), label: "Buscar"),
+            BottomNavigationBarItem(
+                icon: Icon(FeatherIcons.bookOpen), label: "Biblioteca"),
+          ],
+        ),
       ),
     );
   }
