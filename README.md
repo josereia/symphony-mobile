@@ -1,6 +1,15 @@
 # symphony
 
-A music player via streaming like Spotify and Deezer.
+Um music player inspirado no spotify, deezer e apple music. Tecnologias: Flutter, Getx e Firebase.
+
+###### A music player via streaming like Spotify and Deezer.
+
+## Netlify
+
+Versão web mobile da aplicação disponível via Netlify.
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6303f42c-7bbc-4371-9afb-b017f3e4f70a/deploy-status)](https://app.netlify.com/sites/symphonymp/deploys)
+https://symphonymp.netlify.app/
 
 ## Getting Started
 
