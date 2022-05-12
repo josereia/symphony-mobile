@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:get/get.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:symphony/data/model/song_data.dart';
+import 'package:symphony/data/provider/api_provider.dart';
 
 class AlbumList extends StatelessWidget {
+  final cloudinaryApi = Get.put(ApiProvider());
   final String title;
+  final List<SongData> data;
 
-  const AlbumList({Key? key, required this.title}) : super(key: key);
+  AlbumList({Key? key, required this.title, required this.data})
+      : super(key: key);
 
   Future<Color> _getImagePalette(ImageProvider imageProvider) async {
     final PaletteGenerator paletteGenerator =
@@ -15,30 +22,39 @@ class AlbumList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headlineSmall,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            IconButton(
+              onPressed: () {},
+              alignment: Alignment.centerRight,
+              icon: const Icon(FeatherIcons.chevronRight),
+            )
+          ],
         ),
+        const SizedBox(height: 16),
         SizedBox(
-          height: 220,
+          height: 202,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: 5,
+            itemCount: data.length,
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(width: 16),
             itemBuilder: (context, index) {
               return FutureBuilder<Color>(
                 future: _getImagePalette(
-                  const NetworkImage(
-                      "https://upload.wikimedia.org/wikipedia/pt/7/71/Sour_-_Olivia_Rodrigo.png"),
+                  NetworkImage(
+                    cloudinaryApi.getAlbumPicURL(data[index].album),
+                  ),
                 ),
                 builder: (context, snapshot) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -64,7 +80,7 @@ class AlbumList extends StatelessWidget {
                               spreadRadius: 0.0,
                             ),
                             BoxShadow(
-                              color: snapshot.data?.withAlpha(60) ??
+                              color: snapshot.data?.withAlpha(60) ?? 
                                   Colors.grey.withAlpha(60),
                               offset: const Offset(
                                 0.0,
@@ -77,20 +93,34 @@ class AlbumList extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: const Image(
+                          child: Image(
                             width: 140,
                             height: 140,
+                            fit: BoxFit.cover,
                             image: NetworkImage(
-                                "https://upload.wikimedia.org/wikipedia/pt/7/71/Sour_-_Olivia_Rodrigo.png"),
+                              cloudinaryApi.getAlbumPicURL(data[index].album),
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 9),
-                      Text(
-                        "SOUR",
-                        style: Theme.of(context).textTheme.titleMedium,
+                      const SizedBox(height: 9 + 6),
+                      SizedBox(
+                        width: 140,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data[index].album,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Text(
+                              data[index].album,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
-                      const Text("Olivia Rodrigo"),
                     ],
                   );
                 },

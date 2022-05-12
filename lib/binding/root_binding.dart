@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:symphony/controller/root_controller.dart';
+import 'package:symphony/controller/pages/root_controller.dart';
 
 class RootBinding implements Bindings {
   @override

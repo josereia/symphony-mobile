@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:symphony/controller/root_controller.dart';
+import 'package:symphony/controller/pages/root_controller.dart';
 import 'package:symphony/ui/pages/home_page.dart';
 import 'package:symphony/ui/pages/library_page.dart';
 import 'package:symphony/ui/pages/search_page.dart';
@@ -15,10 +15,10 @@ class RootPage extends GetView<RootController> {
       body: Obx(
         () => IndexedStack(
           index: controller.tabIndex.value,
-          children: const [
+          children: [
             HomePage(),
-            SearchPage(),
-            LibraryPage(),
+            const SearchPage(),
+            const LibraryPage(),
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:symphony/controller/login_controller.dart';
+import 'package:symphony/controller/pages/login_controller.dart';
 import 'package:symphony/ui/widgets/buttons/apple_button.dart';
 import 'package:symphony/ui/widgets/buttons/google_button.dart';
 import 'package:symphony/ui/widgets/buttons/link_button.dart';
