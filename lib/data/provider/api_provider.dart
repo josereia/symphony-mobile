@@ -1,6 +1,7 @@
 class ApiProvider {
   String getSongURL(String song, String artist) {
-    return "https://res.cloudinary.com/joaosereia/video/upload/v1646144544/$song-$artist.mp3";
+    String uri = Uri.encodeFull("$song - $artist");
+    return "https://res.cloudinary.com/joaosereia/video/upload/v1646144544/$uri.mp3";
   }
 
   String getAlbumPicURL(String album) {

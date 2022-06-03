@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:symphony/controller/player_controller.dart';
 import 'package:symphony/data/model/song_data.dart';
 
 import '../../../data/provider/api_provider.dart';
 
 class SongList extends StatelessWidget {
   final cloudinaryApi = Get.put(ApiProvider());
+  final playerController = Get.find<PlayerController>();
+
   final String title;
   final List<SongData> data;
 
@@ -44,7 +47,9 @@ class SongList extends StatelessWidget {
                 const SizedBox(width: 16),
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () {},
+                onTap: () {
+                  playerController.play(data, index);
+                },
                 borderRadius: BorderRadius.circular(16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

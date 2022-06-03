@@ -41,30 +41,34 @@ class ArtistList extends StatelessWidget {
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(width: 16),
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image(
+              return InkWell(
+                onTap: () {},
+                borderRadius: BorderRadius.circular(16),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image(
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          cloudinaryApi.getArtistPicURL(data[index].artists[0]),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    SizedBox(
                       width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        cloudinaryApi.getArtistPicURL(data[index].artists[0]),
+                      child: Center(
+                        child: Text(
+                          data[index].artists[0],
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  SizedBox(
-                    width: 100,
-                    child: Center(
-                      child: Text( 
-                        data[index].artists[0],
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),

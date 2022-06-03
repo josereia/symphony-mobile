@@ -16,8 +16,13 @@ class AppPages {
   static final pages = [
     GetPage(
       name: AppRoutes.initial,
-      page: () => const RootPage(),
-      bindings: [RootBinding(), HomeBinding(), SearchBinding(), LibraryBinding()],
+      page: () => RootPage(),
+      bindings: [
+        RootBinding(),
+        HomeBinding(),
+        SearchBinding(),
+        LibraryBinding(),
+      ],
       transition: Transition.circularReveal,
     ),
     GetPage(
