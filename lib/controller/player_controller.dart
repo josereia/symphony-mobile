@@ -91,6 +91,10 @@ class PlayerController extends GetxController {
     _audioPlayer.seekToNext();
   }
 
+  void previous() {
+    _audioPlayer.seekToPrevious();
+  }
+
   void playPause() {
     if (getIsPlaying) {
       _audioPlayer.pause();
