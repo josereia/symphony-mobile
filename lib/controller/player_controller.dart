@@ -12,6 +12,7 @@ class PlayerController extends GetxController {
   final Rx<Duration> _position = const Duration(milliseconds: 0).obs;
   final Rx<Duration> _bufferedPosition = const Duration(milliseconds: 0).obs;
   final RxBool _isPlaying = false.obs;
+  final RxBool _isShuffle = false.obs;
   final Rx<SongData> _currentSong = SongData(
     title: "",
     artists: [""],
@@ -33,6 +34,7 @@ class PlayerController extends GetxController {
   Duration get getPosition => _position.value;
   Duration get getBufferedPosition => _bufferedPosition.value;
   bool get getIsPlaying => _isPlaying.value;
+  bool get getIsShuffle => _isShuffle.value;
 
   @override
   void onInit() {
@@ -47,6 +49,9 @@ class PlayerController extends GetxController {
     });
     _audioPlayer.positionStream.listen((event) {
       _position.value = event;
+    });
+    _audioPlayer.shuffleModeEnabledStream.listen((event) {
+      _isShuffle.value = event;
     });
     _audioPlayer.playerStateStream.listen((event) {
       _isPlaying.value = event.playing;
@@ -93,6 +98,16 @@ class PlayerController extends GetxController {
 
   void previous() {
     _audioPlayer.seekToPrevious();
+  }
+
+  void repeat() {}
+
+  void shuffle() {
+    if (getIsShuffle) {
+      _audioPlayer.setShuffleModeEnabled(false);
+    } else {
+      _audioPlayer.setShuffleModeEnabled(true);
+    }
   }
 
   void playPause() {
