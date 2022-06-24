@@ -39,10 +39,12 @@ class RootPage extends GetView<RootController> {
                 right: 4,
                 child: InkWell(
                   onTap: () => showCupertinoModalBottomSheet(
-                      expand: true,
-                      topRadius: const Radius.circular(20),
-                      context: context,
-                      builder: (context) => ModalPlayer()),
+                    expand: true,
+                    topRadius: const Radius.circular(20),
+                    context: context,
+                    builder: (context) => ModalPlayer(),
+                    duration: const Duration(milliseconds: 200),
+                  ),
                   child: FloatPlayer(),
                 ),
               ),

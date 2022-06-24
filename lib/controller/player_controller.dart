@@ -13,6 +13,8 @@ class PlayerController extends GetxController {
   final Rx<Duration> _bufferedPosition = const Duration(milliseconds: 0).obs;
   final RxBool _isPlaying = false.obs;
   final RxBool _isShuffle = false.obs;
+  final RxBool _isLoop = false.obs;
+  final RxString _playlistTitle = "".obs;
   final Rx<SongData> _currentSong = SongData(
     title: "",
     artists: [""],
@@ -35,6 +37,8 @@ class PlayerController extends GetxController {
   Duration get getBufferedPosition => _bufferedPosition.value;
   bool get getIsPlaying => _isPlaying.value;
   bool get getIsShuffle => _isShuffle.value;
+  bool get getIsLoop => _isLoop.value;
+  String get getPlaylistTitle => _playlistTitle.value;
 
   @override
   void onInit() {
@@ -42,7 +46,7 @@ class PlayerController extends GetxController {
       _currentSong.value = _data[event ?? 0];
     });
     _audioPlayer.durationStream.listen((event) {
-      _duration.value = event;
+      _duration.value = event ?? Duration.zero;
     });
     _audioPlayer.bufferedPositionStream.listen((event) {
       _bufferedPosition.value = event;
@@ -56,12 +60,17 @@ class PlayerController extends GetxController {
     _audioPlayer.playerStateStream.listen((event) {
       _isPlaying.value = event.playing;
     });
+    _audioPlayer.loopModeStream.listen((event) {
+      _isLoop.value = (event == LoopMode.one ? true : false);
+    });
 
     super.onInit();
   }
 
-  void play(List<SongData> songs, int index) async {
+  void play(List<SongData> songs, int index, String playlistTitle) async {
     _data.value = songs;
+    _playlistTitle.value = playlistTitle;
+
     await _audioPlayer
         .setAudioSource(
       ConcatenatingAudioSource(
@@ -100,7 +109,13 @@ class PlayerController extends GetxController {
     _audioPlayer.seekToPrevious();
   }
 
-  void repeat() {}
+  void repeat() {
+    if (getIsLoop) {
+      _audioPlayer.setLoopMode(LoopMode.off);
+    } else {
+      _audioPlayer.setLoopMode(LoopMode.one);
+    }
+  }
 
   void shuffle() {
     if (getIsShuffle) {
@@ -116,5 +131,9 @@ class PlayerController extends GetxController {
     } else {
       _audioPlayer.play();
     }
+  }
+
+  void seekTo(position) {
+    _audioPlayer.seek(position);
   }
 }

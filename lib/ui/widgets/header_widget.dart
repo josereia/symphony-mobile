@@ -11,23 +11,27 @@ class HeaderWidget extends StatelessWidget with PreferredSizeWidget {
     Key? key,
     required this.title,
     this.actions,
-  })  : preferredSize = const Size.fromHeight(100),
+  })  : preferredSize = const Size.fromHeight(70),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(
-        title,
-        style: Theme.of(context).appBarTheme.toolbarTextStyle,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).appBarTheme.toolbarTextStyle,
+          ),
+          Row(
+            children: actions ?? [],
+          ),
+        ],
       ),
-      actions: [
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: actions ?? [],
-            ))
-      ],
     );
   }
 }

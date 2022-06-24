@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:symphony/ui/widgets/header_widget.dart';
 
 class LibraryPage extends GetView {
   const LibraryPage({Key? key}) : super(key: key);
@@ -8,11 +9,8 @@ class LibraryPage extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Biblioteca",
-          style: Theme.of(context).appBarTheme.toolbarTextStyle,
-        ),
+      appBar: HeaderWidget(
+        title: "Biblioteca",
         actions: [
           IconButton(
             onPressed: () {},
@@ -23,6 +21,8 @@ class LibraryPage extends GetView {
       body: GridView.count(
         crossAxisCount: 2,
         mainAxisSpacing: 16,
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 100),
         children: [
           InkWell(
             borderRadius: BorderRadius.circular(16),
@@ -35,8 +35,8 @@ class LibraryPage extends GetView {
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
                     "https://preview.redd.it/rnqa7yhv4il71.jpg?width=640&crop=smart&auto=webp&s=819eb2bda1b35c7729065035a16e81824132e2f1",
-                    width: 140,
-                    height: 140,
+                    width: 120,
+                    height: 120,
                   ),
                 ),
                 const SizedBox(height: 6),

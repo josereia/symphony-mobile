@@ -23,7 +23,6 @@ class LightTheme {
   ThemeData getThemeData() {
     return theme.copyWith(
       appBarTheme: AppBarTheme(
-        toolbarHeight: 100,
         toolbarTextStyle: theme.textTheme.headlineLarge,
         backgroundColor: theme.scaffoldBackgroundColor,
         surfaceTintColor: theme.scaffoldBackgroundColor,

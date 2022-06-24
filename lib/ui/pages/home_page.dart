@@ -39,38 +39,37 @@ class HomePage extends GetView<HomeController> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Obx(
-                () => ArtistList(
-                  title: "Alguns artistas",
-                  data: songController.songs,
-                ),
+      body: SingleChildScrollView(
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 100),
+        child: Column(
+          children: [
+            Obx(
+              () => ArtistList(
+                title: "Alguns artistas",
+                data: songController.songs,
               ),
-              const SizedBox(height: 16 * 2),
-              Obx(
-                () => SongList(
-                  title: "Recomendados",
-                  data: songController.songs,
-                ),
+            ),
+            const SizedBox(height: 16 * 2),
+            Obx(
+              () => SongList(
+                title: "Recomendados",
+                data: songController.songs,
               ),
-              const SizedBox(height: 16 * 2),
-              Obx(
-                () => AlbumList(
-                  title: "Alguns álbuns",
-                  data: songController.songs,
-                ),
+            ),
+            const SizedBox(height: 16 * 2),
+            Obx(
+              () => AlbumList(
+                title: "Alguns álbuns",
+                data: songController.songs,
               ),
-              const SizedBox(height: 16),
-              PrimaryButton(
-                title: "Sair",
-                onPressed: () => log(songController.songs.toString()),
-              )
-            ],
-          ),
+            ),
+            const SizedBox(height: 16),
+            PrimaryButton(
+              title: "Sair",
+              onPressed: () => log(songController.songs.toString()),
+            )
+          ],
         ),
       ),
     );

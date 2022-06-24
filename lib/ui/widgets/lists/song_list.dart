@@ -48,7 +48,7 @@ class SongList extends StatelessWidget {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  playerController.play(data, index);
+                  playerController.play(data, index, title);
                 },
                 borderRadius: BorderRadius.circular(16),
                 child: Column(

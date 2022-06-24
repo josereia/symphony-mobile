@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:symphony/ui/widgets/header_widget.dart';
 
 class SearchPage extends GetView {
   const SearchPage({Key? key}) : super(key: key);
@@ -7,11 +8,8 @@ class SearchPage extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Buscar",
-          style: Theme.of(context).appBarTheme.toolbarTextStyle,
-        ),
+      appBar: HeaderWidget(
+        title: "Buscar",
       ),
       body: const Center(
         child: Text("Buscar"),

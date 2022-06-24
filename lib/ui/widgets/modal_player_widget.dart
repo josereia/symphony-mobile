@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:symphony/data/provider/api_provider.dart';
 
-import '../../controller/player_controller.dart';
+import 'package:symphony/controller/player_controller.dart';
 
 class ModalPlayer extends StatelessWidget {
   final playerController = Get.find<PlayerController>();
@@ -23,11 +23,14 @@ class ModalPlayer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text("Reproduzindo de:"),
+              children: [
+                const Text("Reproduzindo de:"),
+                Obx(
+                  () => Text(playerController.getPlaylistTitle),
+                ),
               ],
             ),
             Obx(
@@ -101,6 +104,9 @@ class ModalPlayer extends StatelessWidget {
                       barHeight: 4,
                       thumbRadius: 8,
                       baseBarColor: Colors.grey.withAlpha(60),
+                      onSeek: (position) => playerController.seekTo(position),
+                      timeLabelTextStyle:
+                          Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                   Row(
@@ -145,11 +151,16 @@ class ModalPlayer extends StatelessWidget {
                           ),
                         ],
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          FeatherIcons.repeat,
-                          size: 20,
+                      Obx(
+                        () => IconButton(
+                          onPressed: () => playerController.repeat(),
+                          icon: Icon(
+                            FeatherIcons.repeat,
+                            size: 20,
+                            color: playerController.getIsLoop
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).iconTheme.color,
+                          ),
                         ),
                       ),
                     ],
