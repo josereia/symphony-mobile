@@ -43,7 +43,7 @@ class ModalPlayer extends StatelessWidget {
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 40,
-                          offset: const Offset(0, 20),
+                          offset: const Offset(0, 16),
                           color: Colors.black.withAlpha(60),
                         ),
                       ],
@@ -54,31 +54,35 @@ class ModalPlayer extends StatelessWidget {
                       child: Image.network(
                         cloudinaryApi.getAlbumPicURL(
                             playerController.getCurrentSong.album),
-                        width: 260,
-                        height: 260,
+                        width: 280,
+                        height: 280,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 16 * 2),
                   SizedBox(
-                    width: 260,
+                    width: 280,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              playerController.getCurrentSong.title,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              playerController.getCurrentSong.artists
-                                  .join(", "),
-                            ),
-                          ],
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                playerController.getCurrentSong.title,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
+                              Text(
+                                playerController.getCurrentSong.artists
+                                    .join(", "),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
                         IconButton(
                             onPressed: () {},

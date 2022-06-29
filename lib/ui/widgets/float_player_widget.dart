@@ -53,57 +53,71 @@ class FloatPlayer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Obx(
-                          () => Image(
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                            image: playerController
-                                    .getCurrentSong.album.isNotEmpty
-                                ? NetworkImage(
-                                    cloudinaryApi.getAlbumPicURL(
-                                        playerController.getCurrentSong.album),
-                                  )
-                                : const NetworkImage(
-                                    "https://paulejorgensen.com/wp-content/uploads/2018/12/album-cover-placeholder-light.png",
-                                  ),
+                  Flexible(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Obx(
+                            () => Image(
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              image: playerController
+                                      .getCurrentSong.album.isNotEmpty
+                                  ? NetworkImage(
+                                      cloudinaryApi.getAlbumPicURL(
+                                        playerController.getCurrentSong.album,
+                                      ),
+                                    )
+                                  : const NetworkImage(
+                                      "https://paulejorgensen.com/wp-content/uploads/2018/12/album-cover-placeholder-light.png",
+                                    ),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () => Text(
-                              playerController.getCurrentSong.title,
-                              style: TextStyle(
-                                color: context.theme.colorScheme.brightness ==
-                                        Brightness.dark
-                                    ? Colors.black
-                                    : Colors.white,
+                        const SizedBox(width: 16),
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(
+                                () => Text(
+                                  playerController.getCurrentSong.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        color: context.theme.colorScheme
+                                                    .brightness ==
+                                                Brightness.dark
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              playerController.getCurrentSong.artists[0],
-                              style: TextStyle(
-                                color: context.theme.colorScheme.brightness ==
-                                        Brightness.dark
-                                    ? Colors.black
-                                    : Colors.white,
+                              Obx(
+                                () => Text(
+                                  playerController.getCurrentSong.artists[0],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color:
+                                        context.theme.colorScheme.brightness ==
+                                                Brightness.dark
+                                            ? Colors.black
+                                            : Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     children: [

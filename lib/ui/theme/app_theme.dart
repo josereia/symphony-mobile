@@ -12,8 +12,10 @@ class LightTheme {
                 const TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
             headlineSmall:
                 const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+            titleLarge:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             titleMedium:
-                const TextStyle(fontSize: 18, fontWeight: FontWeight.w500))
+                const TextStyle(fontSize: 16, fontWeight: FontWeight.w500))
         .apply(
           bodyColor: const Color(0xff27243B),
           displayColor: const Color(0xff27243B),
