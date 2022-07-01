@@ -3,11 +3,11 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:symphony/data/model/song_data.dart';
 import 'package:symphony/data/provider/api_provider.dart';
+import 'package:home_widget/home_widget.dart';
 
 class PlayerController extends GetxController {
   final _audioPlayer = AudioPlayer();
   final _cloudinaryApi = Get.put(ApiProvider());
-
   final Rx<Duration?> _duration = const Duration(milliseconds: 0).obs;
   final Rx<Duration> _position = const Duration(milliseconds: 0).obs;
   final Rx<Duration> _bufferedPosition = const Duration(milliseconds: 0).obs;
@@ -40,10 +40,24 @@ class PlayerController extends GetxController {
   bool get getIsLoop => _isLoop.value;
   String get getPlaylistTitle => _playlistTitle.value;
 
+  Future<void> _updateAppWidget() async {
+    await HomeWidget.saveWidgetData<String>(
+        "_songTitle", _currentSong.value.title);
+    await HomeWidget.saveWidgetData<String>(
+        "_songArtists", _currentSong.value.artists.join(", "));
+    await HomeWidget.saveWidgetData<String>("_songAlbumPic",
+        _cloudinaryApi.getAlbumPicURL(_currentSong.value.album));
+    await HomeWidget.updateWidget(
+        name: "PlayerWidgetProvider", iOSName: "PlayerWidgetProvider");
+  }
+
   @override
   void onInit() {
-    _audioPlayer.currentIndexStream.listen((event) {
-      _currentSong.value = _data[event ?? 0];
+       _audioPlayer.currentIndexStream.listen((event) {
+      if (event != null) {
+        _currentSong.value = _data[event];
+        _updateAppWidget();
+      }
     });
     _audioPlayer.durationStream.listen((event) {
       _duration.value = event ?? Duration.zero;
