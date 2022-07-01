@@ -64,6 +64,9 @@ class LightTheme {
           ),
         ),
       ),
+      iconTheme: const IconThemeData(
+        color: Colors.grey,
+      ),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:symphony/data/model/song_data.dart';
 import 'package:symphony/data/provider/api_provider.dart';
+import 'package:symphony/routes/app_pages.dart';
 
 class AlbumList extends StatelessWidget {
   final cloudinaryApi = Get.put(ApiProvider());
@@ -41,7 +42,9 @@ class AlbumList extends StatelessWidget {
                 const SizedBox(width: 16),
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(AppRoutes.albumPage, arguments: data[index]);
+                },
                 borderRadius: BorderRadius.circular(16),
                 child: Column(
                   children: [

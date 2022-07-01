@@ -4,6 +4,9 @@ import 'package:symphony/binding/library_binding.dart';
 import 'package:symphony/binding/login_binding.dart';
 import 'package:symphony/binding/root_binding.dart';
 import 'package:symphony/binding/search_binding.dart';
+
+//pages
+import 'package:symphony/ui/pages/album_page.dart';
 import 'package:symphony/ui/pages/home_page.dart';
 import 'package:symphony/ui/pages/library_page.dart';
 import 'package:symphony/ui/pages/login_page.dart';
@@ -37,12 +40,18 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
-        name: AppRoutes.search,
-        page: () => const SearchPage(),
-        binding: SearchBinding()),
+      name: AppRoutes.search,
+      page: () => const SearchPage(),
+      binding: SearchBinding(),
+    ),
     GetPage(
-        name: AppRoutes.library,
-        page: () => const LibraryPage(),
-        binding: LibraryBinding()),
+      name: AppRoutes.library,
+      page: () => const LibraryPage(),
+      binding: LibraryBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.albumPage,
+      page: () => AlbumPage(),
+    ),
   ];
 }
