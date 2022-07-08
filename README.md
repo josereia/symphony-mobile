@@ -1,25 +1,42 @@
-# symphony
+<p align="center">:construction: Projeto em desenvolvimento !! :construction:</p>
 
-Um music player inspirado no spotify, deezer e apple music. Tecnologias: Flutter, Getx e Firebase.
+<h2 align="center">
+  <p><img src="assets/logo.png"></p>
+  symphony
+  <p></p>
+</h2>
 
-###### A music player via streaming like Spotify and Deezer.
+<p>
+  <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white">
+  <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white">
+  <img src="https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white">
+  <img src="https://img.shields.io/badge/kotlin-%230095D5.svg?style=for-the-badge&logo=kotlin&logoColor=white">
+  <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
+  <p></p>
+  <p>
+    <img src="https://img.shields.io/github/stars/josereia/symphony-desktop?color=yellow">
+    <img src="https://img.shields.io/github/forks/josereia/symphony-desktop?color=important">
+  </p>
+</p>
+  
+## :scroll: Sobre
+Um music player inspirado no spotify, deezer e apple music. 
+> A music player via streaming like Spotify and Deezer.
 
-## Netlify
+## 🧰 Tecnologias usadas
+>Até o momento.
+- Flutter
+- Dart 
+- Kotlin
+- GetX 
+- Firebase
+- JustAudio
 
-Versão web mobile da aplicação disponível via Netlify.
+## :iphone: Plataformas suportadas
+>Até o momento.
+<img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/>
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/6303f42c-7bbc-4371-9afb-b017f3e4f70a/deploy-status)](https://app.netlify.com/sites/symphonymp/deploys)
-https://symphonymp.netlify.app/
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📷 Imagem do projeto
+>Até o momento.
+  <img src="assets/screenshot.png">
+  
