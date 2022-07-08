@@ -38,5 +38,8 @@ Um music player inspirado no spotify, deezer e apple music.
 
 ## 📷 Imagem do projeto
 >Até o momento.
-  <img src="assets/screenshot.png">
+<p>
+  <img width="200" src="assets/screenshot.png">
+  <img width="200" src="assets/screenshot1.png">
+</p>
   
