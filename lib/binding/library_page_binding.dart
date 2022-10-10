@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:symphony/controller/pages/library_controller.dart';
+import 'package:symphony/controller/pages/library_page_controller.dart';
 
 class LibraryBinding implements Bindings {
   @override

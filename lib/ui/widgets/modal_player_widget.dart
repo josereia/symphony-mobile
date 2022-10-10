@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
@@ -12,7 +13,7 @@ class ModalPlayer extends StatelessWidget {
   final playerController = Get.find<PlayerController>();
   final cloudinaryApi = Get.put<ApiProvider>(ApiProvider());
 
-  ModalPlayer({Key? key}) : super(key: key);
+  ModalPlayer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,12 @@ class ModalPlayer extends StatelessWidget {
               children: [
                 const Text("Reproduzindo de:"),
                 Obx(
-                  () => Text(playerController.getPlaylistTitle),
+                  () => Text(
+                    playerController.getPlaylistTitle,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -48,48 +54,52 @@ class ModalPlayer extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      clipBehavior: Clip.antiAlias,
-                      child: Image.network(
-                        cloudinaryApi.getAlbumPicURL(
-                            playerController.getCurrentSong.album),
-                        width: 280,
-                        height: 280,
-                        fit: BoxFit.cover,
+                    child: AspectRatio(
+                      aspectRatio: 1 / 1,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        clipBehavior: Clip.antiAlias,
+                        child: Obx(
+                          () => playerController.getCurrentSong != null
+                              ? CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  useOldImageOnUrlChange: true,
+                                  cacheKey:
+                                      playerController.getCurrentSong!.album,
+                                  imageUrl: cloudinaryApi.getAlbumPicURL(
+                                    playerController.getCurrentSong!.album,
+                                  ),
+                                )
+                              : const CircularProgressIndicator(),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 16 * 2),
-                  SizedBox(
-                    width: 280,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                playerController.getCurrentSong.title,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              Text(
-                                playerController.getCurrentSong.artists
-                                    .join(", "),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            playerController.getCurrentSong!.title,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
-                        ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(FeatherIcons.heart))
-                      ],
-                    ),
-                  )
+                          Text(
+                            playerController.getCurrentSong!.artists.join(", "),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(FeatherIcons.heart),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LightTheme {
-  ThemeData theme = ThemeData(
+  final ThemeData _theme = ThemeData(
     colorSchemeSeed: const Color(0xff4D3FC6),
     brightness: Brightness.light,
     useMaterial3: true,
@@ -23,11 +23,11 @@ class LightTheme {
   );
 
   ThemeData getThemeData() {
-    return theme.copyWith(
+    return _theme.copyWith(
       appBarTheme: AppBarTheme(
-        toolbarTextStyle: theme.textTheme.headlineLarge,
-        backgroundColor: theme.scaffoldBackgroundColor,
-        surfaceTintColor: theme.scaffoldBackgroundColor,
+        toolbarTextStyle: _theme.textTheme.headlineLarge,
+        backgroundColor: _theme.scaffoldBackgroundColor,
+        surfaceTintColor: _theme.scaffoldBackgroundColor,
         elevation: 0,
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -45,18 +45,18 @@ class LightTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.primary),
+          borderSide: BorderSide(color: _theme.colorScheme.primary),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.error),
+          borderSide: BorderSide(color: _theme.colorScheme.error),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(200, 50),
-          primary: theme.primaryColor,
-          onPrimary: Colors.white,
+          backgroundColor: _theme.primaryColor,
+          foregroundColor: Colors.white,
           elevation: 0,
           alignment: Alignment.center,
           shape: RoundedRectangleBorder(
@@ -72,7 +72,7 @@ class LightTheme {
 }
 
 class DarkTheme {
-  ThemeData theme = ThemeData(
+  final ThemeData _theme = ThemeData(
     colorSchemeSeed: const Color(0xff4D3FC6),
     brightness: Brightness.dark,
     useMaterial3: true,
@@ -91,11 +91,11 @@ class DarkTheme {
   );
 
   ThemeData getThemeData() {
-    return theme.copyWith(
+    return _theme.copyWith(
       appBarTheme: AppBarTheme(
         toolbarHeight: 100,
-        toolbarTextStyle: theme.textTheme.headlineLarge,
-        backgroundColor: theme.scaffoldBackgroundColor,
+        toolbarTextStyle: _theme.textTheme.headlineLarge,
+        backgroundColor: _theme.scaffoldBackgroundColor,
         elevation: 0,
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -113,18 +113,18 @@ class DarkTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.primary),
+          borderSide: BorderSide(color: _theme.colorScheme.primary),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: theme.colorScheme.error),
+          borderSide: BorderSide(color: _theme.colorScheme.error),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(200, 50),
-          primary: theme.primaryColor,
-          onPrimary: Colors.white,
+          backgroundColor: _theme.primaryColor,
+          foregroundColor: Colors.white,
           elevation: 0,
           alignment: Alignment.center,
           shape: RoundedRectangleBorder(

@@ -6,13 +6,13 @@ class PrimaryButton extends StatelessWidget {
   final IconData? suffixIcon;
   final VoidCallback? onPressed;
 
-  const PrimaryButton(
-      {Key? key,
-      required this.title,
-      this.prefixIcon,
-      this.suffixIcon,
-      required this.onPressed})
-      : super(key: key);
+  const PrimaryButton({
+    super.key,
+    required this.title,
+    this.prefixIcon,
+    this.suffixIcon,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {

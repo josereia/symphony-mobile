@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'google_button.dart';
 
 class AppleButton extends GoogleButton {
-  const AppleButton({Key? key, required VoidCallback onPressed})
-      : super(
-          key: key,
+  const AppleButton({
+    super.key,
+    required VoidCallback onPressed,
+  }) : super(
           onPressed: onPressed,
           title: "Fazer login com a Apple   ",
           backgroundColor: Colors.black,

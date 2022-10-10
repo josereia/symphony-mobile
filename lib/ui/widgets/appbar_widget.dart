@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-class HeaderWidget extends StatelessWidget with PreferredSizeWidget {
+class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   @override
-  final Size preferredSize;
+  Size get preferredSize => const Size.fromHeight(100);
 
   final String title;
   final List<Widget>? actions;
 
-  HeaderWidget({
-    Key? key,
+  AppBarWidget({
+    super.key,
     required this.title,
     this.actions,
-  })  : preferredSize = const Size.fromHeight(100),
-        super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

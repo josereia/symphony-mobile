@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,7 @@ class FloatPlayer extends StatelessWidget {
   final playerController = Get.find<PlayerController>();
   final cloudinaryApi = Get.put(ApiProvider());
 
-  FloatPlayer({Key? key}) : super(key: key);
+  FloatPlayer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +33,6 @@ class FloatPlayer extends StatelessWidget {
                   child: FractionallySizedBox(
                     widthFactor: 1,
                     child: ProgressBar(
-                      total: playerController.getDuration ??
-                          const Duration(
-                            milliseconds: 0,
-                          ),
                       progress: playerController.getPosition,
                       buffered: playerController.getBufferedPosition,
                       timeLabelLocation: TimeLabelLocation.none,
@@ -45,6 +42,10 @@ class FloatPlayer extends StatelessWidget {
                       progressBarColor: Colors.white,
                       thumbColor: Colors.white,
                       baseBarColor: Colors.grey.withAlpha(200),
+                      total: playerController.getDuration ??
+                          const Duration(
+                            milliseconds: 0,
+                          ),
                     ),
                   ),
                 ),
@@ -61,59 +62,58 @@ class FloatPlayer extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Obx(
-                            () => Image(
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                              image: playerController
-                                      .getCurrentSong.album.isNotEmpty
-                                  ? NetworkImage(
-                                      cloudinaryApi.getAlbumPicURL(
-                                        playerController.getCurrentSong.album,
-                                      ),
-                                    )
-                                  : const NetworkImage(
-                                      "https://paulejorgensen.com/wp-content/uploads/2018/12/album-cover-placeholder-light.png",
+                            () => playerController.getCurrentSong?.album != null
+                                ? CachedNetworkImage(
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    useOldImageOnUrlChange: true,
+                                    imageUrl: cloudinaryApi.getAlbumPicURL(
+                                      playerController.getCurrentSong!.album,
                                     ),
-                            ),
+                                  )
+                                : const CircularProgressIndicator(),
                           ),
                         ),
                         const SizedBox(width: 16),
-                        Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Obx(
-                                () => Text(
-                                  playerController.getCurrentSong.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(
-                                        color: context.theme.colorScheme
-                                                    .brightness ==
-                                                Brightness.dark
-                                            ? Colors.black
-                                            : Colors.white,
+                        Obx(
+                          () => Flexible(
+                            child: playerController.getCurrentSong?.title !=
+                                    null
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        playerController.getCurrentSong!.title,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              color: context.theme.colorScheme
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                            ),
                                       ),
-                                ),
-                              ),
-                              Obx(
-                                () => Text(
-                                  playerController.getCurrentSong.artists[0],
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color:
-                                        context.theme.colorScheme.brightness ==
-                                                Brightness.dark
-                                            ? Colors.black
-                                            : Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
+                                      Text(
+                                        playerController
+                                            .getCurrentSong!.artists[0],
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: context.theme.colorScheme
+                                                      .brightness ==
+                                                  Brightness.dark
+                                              ? Colors.black
+                                              : Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const CircularProgressIndicator(),
                           ),
                         ),
                       ],

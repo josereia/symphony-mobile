@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:symphony/controller/pages/login_controller.dart';
+import 'package:symphony/controller/pages/login_page_controller.dart';
 import 'package:symphony/ui/widgets/buttons/apple_button.dart';
 import 'package:symphony/ui/widgets/buttons/google_button.dart';
 import 'package:symphony/ui/widgets/buttons/link_button.dart';
@@ -10,7 +10,7 @@ import 'package:symphony/ui/widgets/buttons/primary_button.dart';
 import 'package:symphony/ui/widgets/text_input.dart';
 
 class LoginPage extends GetView<LoginController> {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +65,9 @@ class LoginPage extends GetView<LoginController> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               LinkButton(
-                                  title: "Esqueceu sua senha?",
-                                  onPressed: () => controller.resetPass()),
+                                title: "Esqueceu sua senha?",
+                                onPressed: () => controller.resetPass(),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 16),

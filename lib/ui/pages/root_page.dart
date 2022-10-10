@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:symphony/controller/pages/root_controller.dart';
+import 'package:symphony/controller/pages/root_page_controller.dart';
 import 'package:symphony/ui/pages/home_page.dart';
 import 'package:symphony/ui/pages/library_page.dart';
 import 'package:symphony/ui/pages/search_page.dart';
@@ -13,7 +13,7 @@ import '../../controller/player_controller.dart';
 class RootPage extends GetView<RootController> {
   final playerController = Get.find<PlayerController>();
 
-  RootPage({Key? key}) : super(key: key);
+  RootPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +23,26 @@ class RootPage extends GetView<RootController> {
           Obx(
             () => IndexedStack(
               index: controller.tabIndex.value,
-              children: [
+              children: const [
                 HomePage(),
-                const SearchPage(),
-                const LibraryPage(),
+                SearchPage(),
+                LibraryPage(),
               ],
             ),
           ),
           Obx(
             () => Visibility(
-              visible: playerController.getCurrentSong.album.isNotEmpty,
+              visible: playerController.getCurrentSong != null,
               child: Positioned(
                 bottom: 4,
                 left: 4,
                 right: 4,
                 child: InkWell(
                   onTap: () => showCupertinoModalBottomSheet(
-                    expand: true,
-                    topRadius: const Radius.circular(20),
                     context: context,
+                    expand: true,
+                    bounce: true,
+                    topRadius: const Radius.circular(16),
                     builder: (context) => ModalPlayer(),
                     duration: const Duration(milliseconds: 200),
                   ),

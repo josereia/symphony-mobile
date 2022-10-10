@@ -11,7 +11,7 @@ class TextInput extends StatelessWidget {
   final String hintText;
 
   const TextInput({
-    Key? key,
+    super.key,
     this.inputType,
     this.prefixIcon,
     this.suffixIcon,
@@ -20,14 +20,14 @@ class TextInput extends StatelessWidget {
     this.textInputAction,
     required this.onChanged,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType: inputType ?? TextInputType.text,
       textInputAction: textInputAction,
-      style: Theme.of(context).textTheme.bodyText1?.copyWith(),
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
       onChanged: (value) => onChanged(value),
       decoration: InputDecoration(
         hintText: hintText,

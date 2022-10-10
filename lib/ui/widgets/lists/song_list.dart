@@ -1,20 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:symphony/controller/player_controller.dart';
-import 'package:symphony/data/model/song_data.dart';
-
-import '../../../data/provider/api_provider.dart';
+import 'package:symphony/data/model/song_model.dart';
+import 'package:symphony/data/provider/api_provider.dart';
 
 class SongList extends StatelessWidget {
   final cloudinaryApi = Get.put(ApiProvider());
   final playerController = Get.find<PlayerController>();
 
   final String title;
-  final List<SongData> data;
+  final List<SongModel> data;
 
-  SongList({Key? key, required this.title, required this.data})
-      : super(key: key);
+  SongList({super.key, required this.title, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -57,13 +56,14 @@ class SongList extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image(
+                      child: CachedNetworkImage(
                         width: 140,
                         height: 140,
                         fit: BoxFit.cover,
-                        image: NetworkImage(
-                          cloudinaryApi
-                              .getAlbumPicURL(data[index].album.toString()),
+                        useOldImageOnUrlChange: true,
+                        cacheKey: data[index].album,
+                        imageUrl: cloudinaryApi.getAlbumPicURL(
+                          data[index].album,
                         ),
                       ),
                     ),

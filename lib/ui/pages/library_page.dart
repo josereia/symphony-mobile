@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:symphony/ui/widgets/header_widget.dart';
+import 'package:symphony/ui/widgets/appbar_widget.dart';
 
 class LibraryPage extends GetView {
-  const LibraryPage({Key? key}) : super(key: key);
+  const LibraryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderWidget(
+      appBar: AppBarWidget(
         title: "Biblioteca",
         actions: [
           IconButton(

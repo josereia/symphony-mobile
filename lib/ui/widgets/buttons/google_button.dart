@@ -10,7 +10,7 @@ class GoogleButton extends StatelessWidget {
   final IconData? icon;
 
   const GoogleButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     this.title,
     this.backgroundColor,
@@ -18,17 +18,17 @@ class GoogleButton extends StatelessWidget {
     this.borderColor,
     this.textColor,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: backgroundColor ?? Colors.white,
+        backgroundColor: backgroundColor ?? Colors.white,
         minimumSize: const Size.fromHeight(50),
         fixedSize: Size.infinite,
-        onPrimary: onPrimary ?? Colors.grey,
+        foregroundColor: onPrimary ?? Colors.grey,
         side: BorderSide(color: borderColor ?? Colors.grey),
       ),
       child: Row(

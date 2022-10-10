@@ -1,44 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:get/get.dart';
-import 'package:symphony/controller/widgets/pass_input_controller.dart';
 
-class PassInput extends StatelessWidget {
-  final controller = Get.put(PassInputController());
+class PassInput extends StatefulWidget {
   final Function onChanged;
   final Function validator;
   final String hintText;
   final TextInputAction? textInputAction;
 
-  PassInput({
-    Key? key,
+  const PassInput({
+    super.key,
     required this.hintText,
     required this.onChanged,
     required this.validator,
     this.textInputAction,
-  }) : super(key: key);
+  });
+
+  @override
+  State<StatefulWidget> createState() => _PassInputState();
+}
+
+class _PassInputState extends State<PassInput> {
+  bool isObscure = true;
+
+  void changeObscure() {
+    setState(() => isObscure = !isObscure);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => TextFormField(
-        keyboardType: TextInputType.visiblePassword,
-        style: Theme.of(context).textTheme.bodyText1?.copyWith(),
-        obscureText: controller.isObscure.value,
-        onChanged: (value) => onChanged(value),
-        textInputAction: textInputAction,
-        decoration: InputDecoration(
-          hintText: hintText,
-          prefixIcon: const Icon(FeatherIcons.lock),
-          suffixIcon: IconButton(
-            icon: controller.isObscure.value
-                ? const Icon(FeatherIcons.eye)
-                : const Icon(FeatherIcons.eyeOff),
-            onPressed: () => controller.changeObscure(),
-          ),
+    return TextFormField(
+      keyboardType: TextInputType.visiblePassword,
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
+      obscureText: isObscure,
+      onChanged: (value) => widget.onChanged(value),
+      textInputAction: widget.textInputAction,
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+        prefixIcon: const Icon(FeatherIcons.lock),
+        suffixIcon: IconButton(
+          icon: isObscure
+              ? const Icon(FeatherIcons.eye)
+              : const Icon(FeatherIcons.eyeOff),
+          onPressed: () => changeObscure(),
         ),
-        validator: (value) => validator(value),
       ),
+      validator: (value) => widget.validator(value),
     );
   }
 }
