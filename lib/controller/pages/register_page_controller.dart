@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:symphony/data/repository/auth_repository.dart';
 
-class LoginController extends GetxController {
+class RegisterController extends GetxController {
   final AuthRepository repository;
-
   final GlobalKey formKey = GlobalKey<FormState>();
   final RxString email = "".obs;
   final RxString password = "".obs;
+  final RxString passwordConfirmation = "".obs;
+  final RxString b64ProfilePic = "".obs;
 
-  LoginController({required this.repository});
+  RegisterController({required this.repository});
 
   String? validateEmail(String value) {
     if (value.isEmpty) {
@@ -19,35 +20,32 @@ class LoginController extends GetxController {
     return null;
   }
 
-  String? validatePassword(String value) {
-    if (value.isEmpty) {
+  String? validatePassword(String password) {
+    if (password.isEmpty) {
       return "Este campo não pode estar vazio!";
-    } else if (value.length < 8) {
+    }
+
+    if (password.length < 8) {
       return "A senha deve conter no mínimo 8 caracteres.";
     }
 
-    return null;
-  }
+    // if (password != passwordConfirmation) {
+    //   return "Senha e confirmação de senha não conferem";
+    // }
 
-  void register() {
-    repository.register();
+    return null;
   }
 
   void loginWithEmailAndPass() {
     repository.loginWithEmailAndPass(email.value, password.value);
   }
 
-  void loginWithGoogle() {
-    repository.loginWithGoogle();
+  void submit() {
+    repository.registerWithEmailAndPassword(
+        email.value, password.value, b64ProfilePic.value);
   }
 
-  void loginWithApple() {
-    repository.loginWithApple();
+  void goBack() {
+    Get.offNamed("/login");
   }
-
-  void logOut() {
-    repository.logOut();
-  }
-
-  void resetPass() {}
 }

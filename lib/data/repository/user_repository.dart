@@ -1,21 +1,17 @@
-import 'package:symphony/data/provider/auth_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:symphony/data/model/user_model.dart';
+import 'package:symphony/data/provider/user_provider.dart';
 
 class UserRepository {
-  final AuthProvider provider;
+  final UserProvider provider;
 
-  UserRepository({required this.provider});
+  UserRepository(this.provider);
 
-  void loginWithEmailAndPass(String email, String password) {
-    provider.loginWithEmailAndPass(email, password);
+  UserModel? getCurrentUser() {
+    return provider.getCurrentUser();
   }
 
-  void loginWithGoogle() {
-    provider.loginWithGoogle();
-  }
-
-  void loginWithApple() {}
-
-  void logOut() {
-    provider.logOut();
+  Future<void> updateUser(User userInstance, UserModel user) {
+    return provider.updateUser(userInstance, user);
   }
 }

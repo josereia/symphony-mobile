@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:symphony/controller/pages/login_page_controller.dart';
-import 'package:symphony/ui/widgets/buttons/apple_button.dart';
-import 'package:symphony/ui/widgets/buttons/google_button.dart';
-import 'package:symphony/ui/widgets/buttons/link_button.dart';
-import 'package:symphony/ui/widgets/pass_input.dart';
 import 'package:symphony/ui/widgets/buttons/primary_button.dart';
+import 'package:symphony/ui/widgets/imagepick_widget.dart';
+import 'package:symphony/ui/widgets/pass_input.dart';
 import 'package:symphony/ui/widgets/text_input.dart';
 
-class LoginPage extends GetView<LoginController> {
-  const LoginPage({super.key});
+import '../../controller/pages/register_page_controller.dart';
+
+class RegisterPage extends GetView<RegisterController> {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class LoginPage extends GetView<LoginController> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Image(image: AssetImage("assets/login2.png")),
+          // const Image(image: AssetImage("assets/login2.png")),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -27,15 +26,7 @@ class LoginPage extends GetView<LoginController> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    GoogleButton(
-                      onPressed: () => controller.loginWithGoogle(),
-                    ),
-                    const SizedBox(height: 12),
-                    AppleButton(
-                      onPressed: () => controller.loginWithApple(),
-                    ),
-                    const SizedBox(height: 12),
-                    const Text("OU"),
+                    const Text("CADASTRO"),
                     const SizedBox(height: 12),
                     Form(
                       key: controller.formKey,
@@ -57,30 +48,26 @@ class LoginPage extends GetView<LoginController> {
                             hintText: "Senha",
                             textInputAction: TextInputAction.done,
                             onChanged: (value) =>
-                                controller.password.value = value,
+                                {controller.password.value = value},
                             validator: (value) =>
                                 controller.validatePassword(value),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              LinkButton(
-                                title: "Esqueceu sua senha?",
-                                onPressed: () => controller.resetPass(),
-                              ),
-                            ],
-                          ),
-                          PrimaryButton(
-                            title: "Registrar-se",
-                            prefixIcon: Icons.person_add,
-                            onPressed: () => controller.register(),
+                          const SizedBox(height: 12),
+                          ImagePick(
+                            controller: controller,
                           ),
                           const SizedBox(height: 12),
                           PrimaryButton(
-                            title: "Entrar",
-                            prefixIcon: FeatherIcons.logIn,
-                            onPressed: () => controller.loginWithEmailAndPass(),
-                          )
+                            title: "Registrar-se",
+                            prefixIcon: Icons.person_add,
+                            onPressed: () => controller.submit(),
+                          ),
+                          const SizedBox(height: 12),
+                          PrimaryButton(
+                            title: "Voltar",
+                            prefixIcon: Icons.arrow_back,
+                            onPressed: () => controller.goBack(),
+                          ),
                         ],
                       ),
                     ),
