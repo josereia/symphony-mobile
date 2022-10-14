@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: library_prefixes
 import 'package:symphony/ui/widgets/buttons/icon_button.dart' as Symphony;
-
 import '../../controller/pages/register_page_controller.dart';
 
 Future<String> encodeXFile(XFile image) async {
@@ -49,23 +48,34 @@ class _ImagePickState extends State<ImagePick> {
     }
   }
 
+  Widget renderComponent(Uint8List? bytes) {
+    if (bytes != null) {
+      return SizedBox(
+        width: 150,
+        height: 150,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(75),
+            border: Border.all(width: 5, color: const Color(0xff4D3FC6)),
+            color: const Color(0xff4D3FC6),
+            image: DecorationImage(
+              image: MemoryImage(bytes),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Symphony.IconButton(
+        icon: Icons.add_photo_alternate,
+        onPressed: _addImage,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        if (bytes != null)
-          Image.memory(
-            bytes!,
-            height: 100,
-          ),
-        const SizedBox(height: 40),
-        Symphony.IconButton(
-            icon: Icons.add_photo_alternate, onPressed: _addImage)
-        // ElevatedButton(
-        //   onPressed: _addImage,
-        //   child: const Text('Adicionar foto do produto'),
-        // ),
-      ],
+      children: [renderComponent(bytes)],
     );
   }
 }
