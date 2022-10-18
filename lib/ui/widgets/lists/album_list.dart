@@ -23,7 +23,7 @@ class AlbumList extends StatelessWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             IconButton(
               onPressed: () {},

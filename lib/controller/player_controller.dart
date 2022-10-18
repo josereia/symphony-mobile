@@ -84,6 +84,13 @@ class PlayerController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    super.onClose();
+
+    _audioPlayer.dispose();
+  }
+
   void play(List<SongModel> songs, int index, String playlistTitle) async {
     _data.value = songs;
     _playlistTitle.value = playlistTitle;
@@ -154,6 +161,10 @@ class PlayerController extends GetxController {
     } else {
       _audioPlayer.play();
     }
+  }
+
+  void stop() {
+    _audioPlayer.stop();
   }
 
   void seekTo(position) {

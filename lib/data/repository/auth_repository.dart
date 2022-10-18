@@ -1,32 +1,35 @@
 import 'package:symphony/data/provider/auth_provider.dart';
-import 'package:symphony/data/provider/user_provider.dart';
 
 class AuthRepository {
   final AuthProvider provider;
-  final UserProvider userProvider;
 
-  AuthRepository({required this.provider, required this.userProvider});
+  AuthRepository({required this.provider});
 
-  void register() {
-    provider.register();
+  Future<void> loginWithEmailAndPass(String email, String password) async {
+    await provider.loginWithEmailAndPass(email, password);
   }
 
-  void loginWithEmailAndPass(String email, String password) {
-    provider.loginWithEmailAndPass(email, password);
+  Future<void> loginWithGoogle() async {
+    await provider.loginWithGoogle();
   }
 
-  void loginWithGoogle() {
-    provider.loginWithGoogle();
+  Future<void> registerWithEmailAndPassword(
+    String username,
+    String email,
+    String password,
+    String b64ProfilePic,
+  ) async {
+    await provider.registerWithEmailAndPassword(
+      username,
+      email,
+      password,
+      b64ProfilePic,
+    );
   }
 
-  void registerWithEmailAndPassword(
-      String email, String password, String b64ProfilePic) {
-    provider.registerWithEmailAndPassword(email, password, b64ProfilePic);
-  }
+  Future<void> loginWithApple() async {}
 
-  void loginWithApple() {}
-
-  void logOut() {
-    provider.logOut();
+  Future<void> logOut() async {
+    await provider.logOut();
   }
 }

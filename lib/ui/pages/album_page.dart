@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -70,12 +71,14 @@ class _AppBar extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: Image(
+                    child: CachedNetworkImage(
                       width: 140,
                       height: 140,
                       fit: BoxFit.cover,
-                      image: NetworkImage(
-                        cloudinaryApi.getAlbumPicURL(albumData.album),
+                      useOldImageOnUrlChange: true,
+                      cacheKey: albumData.album,
+                      imageUrl: cloudinaryApi.getArtistPicURL(
+                        albumData.album,
                       ),
                     ),
                   ),

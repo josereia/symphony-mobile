@@ -8,14 +8,14 @@ class LightTheme {
     useMaterial3: true,
     textTheme: GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme)
         .copyWith(
-            headlineLarge:
-                const TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
-            headlineSmall:
-                const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-            titleLarge:
-                const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-            titleMedium:
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.w500))
+          headlineLarge: const TextStyle(fontWeight: FontWeight.w700),
+          headlineSmall: const TextStyle(fontWeight: FontWeight.w700),
+          titleLarge: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+          titleMedium: const TextStyle(fontWeight: FontWeight.w500),
+        )
         .apply(
           bodyColor: const Color(0xff27243B),
           displayColor: const Color(0xff27243B),
@@ -64,8 +64,8 @@ class LightTheme {
           ),
         ),
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.grey,
+      iconTheme: IconThemeData(
+        color: Colors.grey[800],
       ),
     );
   }
@@ -76,18 +76,10 @@ class DarkTheme {
     colorSchemeSeed: const Color(0xff4D3FC6),
     brightness: Brightness.dark,
     useMaterial3: true,
-    textTheme: GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme)
-        .copyWith(
-            headlineLarge:
-                const TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
-            headlineSmall:
-                const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-            titleMedium:
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.w500))
-        .apply(
-          bodyColor: const Color(0xffffffff),
-          displayColor: const Color(0xffffffff),
-        ),
+    textTheme: GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme).apply(
+      bodyColor: const Color(0xffffffff),
+      displayColor: const Color(0xffffffff),
+    ),
   );
 
   ThemeData getThemeData() {

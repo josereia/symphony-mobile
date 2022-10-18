@@ -8,7 +8,7 @@ class AppleButton extends GoogleButton {
     required VoidCallback onPressed,
   }) : super(
           onPressed: onPressed,
-          title: "Fazer login com a Apple   ",
+          text: "Fazer login com a Apple   ",
           backgroundColor: Colors.black,
           onPrimary: Colors.white,
           borderColor: Colors.black,

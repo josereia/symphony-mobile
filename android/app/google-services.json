@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "819828396310",
+    "firebase_url": "https://symphony-61682-default-rtdb.firebaseio.com",
     "project_id": "symphony-61682",
     "storage_bucket": "symphony-61682.appspot.com"
   },
@@ -39,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "819828396310-bp7g3ebms8jlr68vrtujr852ugkg5acn.apps.googleusercontent.com",
+              "client_id": "819828396310-be8ms9qdaqno0u66unj2rc2furrkm0o1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "br.com.jotaon.sym"
+                "bundle_id": "br.com.jotaon.symphony"
               }
             }
           ]

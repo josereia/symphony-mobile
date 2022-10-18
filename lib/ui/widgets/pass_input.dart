@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 class PassInput extends StatefulWidget {
-  final Function onChanged;
-  final Function validator;
+  final Function? onChanged;
+  final Function? validator;
   final String hintText;
   final TextInputAction? textInputAction;
+  final TextEditingController? controller;
 
   const PassInput({
     super.key,
-    required this.hintText,
-    required this.onChanged,
-    required this.validator,
+    this.onChanged,
     this.textInputAction,
+    this.validator,
+    this.controller,
+    required this.hintText,
   });
 
   @override
@@ -29,10 +31,12 @@ class _PassInputState extends State<PassInput> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       keyboardType: TextInputType.visiblePassword,
       style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
       obscureText: isObscure,
-      onChanged: (value) => widget.onChanged(value),
+      onChanged:
+          widget.onChanged != null ? (value) => widget.onChanged!(value) : null,
       textInputAction: widget.textInputAction,
       decoration: InputDecoration(
         hintText: widget.hintText,
@@ -44,7 +48,8 @@ class _PassInputState extends State<PassInput> {
           onPressed: () => changeObscure(),
         ),
       ),
-      validator: (value) => widget.validator(value),
+      validator:
+          widget.validator != null ? (value) => widget.validator!() : null,
     );
   }
 }

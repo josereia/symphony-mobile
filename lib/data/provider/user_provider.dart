@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:symphony/data/model/user_model.dart';
 
 class UserProvider {
-  static final FirebaseAuth _authInstance = FirebaseAuth.instance;
-  static final FirebaseFirestore _databaseInstance = FirebaseFirestore.instance;
+  final FirebaseAuth _authInstance = FirebaseAuth.instance;
+  final FirebaseFirestore _databaseInstance = FirebaseFirestore.instance;
 
   UserProvider() {
     _databaseInstance.settings = const Settings(persistenceEnabled: true);

@@ -1,39 +1,15 @@
 import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthProvider extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _base = FirebaseFirestore.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  static final FirebaseAuth _authInstance = FirebaseAuth.instance;
-  late Rx<User?> _firebaseUser = _auth.currentUser.obs;
-  late Rx<GoogleSignInAccount?> _googleUser = _googleSignIn.currentUser.obs;
+class AuthProvider {
+  final FirebaseAuth _authInstance = FirebaseAuth.instance;
 
-  User? get user => _firebaseUser.value;
-
-  void _checkLogin(user) {
-    if (user != null) {
-      Get.offNamed("/");
-    } else {
-      Get.offNamed("/login");
-    }
-  }
-
-  void register() {
-    Get.offNamed("/register");
-  }
-
-  void goBackLogin() {
-    Get.offNamed("/login");
-  }
-
-  Future<void> createBucket(
-      UserCredential credential, String b64ProfilePic) async {
+  Future<String?> _createBucket(
+    UserCredential credential,
+    String b64ProfilePic,
+  ) async {
     final String? userUID = _authInstance.currentUser?.uid;
     final storageRef = FirebaseStorage.instance.ref();
 
@@ -41,81 +17,66 @@ class AuthProvider extends GetxController {
       final userStorageRef = storageRef.child("$userUID/profile");
 
       try {
-        TaskSnapshot result = await userStorageRef.putString(b64ProfilePic,
-            format: PutStringFormat.base64);
+        await userStorageRef.putString(
+          b64ProfilePic,
+          format: PutStringFormat.base64,
+        );
 
-        final userData = <String, dynamic>{
-          "email": credential.user?.email,
-          "bucket": result.metadata?.bucket,
-          "profilePath": result.metadata?.fullPath
-        };
-        _base.collection("users").doc(userUID).set(userData);
+        return userStorageRef.getDownloadURL();
       } on FirebaseException catch (e) {
         log(e.toString());
       }
     }
+
+    return null;
   }
 
-  @override
-  void onReady() {
-    _firebaseUser = Rx<User?>(_auth.currentUser);
-    _googleUser = Rx<GoogleSignInAccount?>(_googleSignIn.currentUser);
-
-    _firebaseUser.bindStream(_auth.userChanges());
-    ever(_firebaseUser, (User? user) {
-      _checkLogin(user);
-    });
-
-    _googleUser.bindStream(_googleSignIn.onCurrentUserChanged);
-    ever(_googleUser, (GoogleSignInAccount? user) {
-      _checkLogin(user);
-    });
-
-    super.onReady();
+  Future<UserCredential?> loginWithEmailAndPass(
+    String email,
+    String password,
+  ) async {
+    return await _authInstance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
   }
 
-  void loginWithEmailAndPass(String email, String password) async {
-    try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } catch (e) {
-      log(e.toString());
-    }
-  }
+  Future<User?> loginWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-  void registerWithEmailAndPassword(
-      String email, String password, String b64ProfilePic) async {
-    try {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((credential) => createBucket(credential, b64ProfilePic));
-    } catch (e) {
-      log(e.toString());
-    }
-  }
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
-  void loginWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleUser.authentication;
-        final AuthCredential authCredential = GoogleAuthProvider.credential(
-          idToken: googleSignInAuthentication.idToken,
-          accessToken: googleSignInAuthentication.accessToken,
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return await _authInstance.signInWithCredential(credential).then(
+          (value) => value.user,
         );
-
-        await _auth.signInWithCredential(authCredential);
-      }
-    } catch (e) {
-      log(e.toString());
-    }
   }
 
-  void logOut() async {
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      log(e.toString());
-    }
+  Future<void> logOut() async {
+    return await _authInstance.signOut();
+  }
+
+  Future<void> registerWithEmailAndPassword(
+    String username,
+    String email,
+    String password,
+    String b64ProfilePic,
+  ) async {
+    return await _authInstance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then(
+      (credential) {
+        credential.user?.updateDisplayName(username).then(
+              (value) => _createBucket(credential, b64ProfilePic).then(
+                (value) => credential.user?.updatePhotoURL(value),
+              ),
+            );
+      },
+    );
   }
 }

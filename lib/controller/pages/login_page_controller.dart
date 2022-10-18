@@ -1,52 +1,125 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:symphony/data/repository/auth_repository.dart';
 
+void _showAlert(String message) {
+  Get.defaultDialog(
+    title: "Ops! Algo deu errado.",
+    middleText: message,
+    barrierDismissible: true,
+    textConfirm: "Ok",
+    onConfirm: () => Get.back(),
+  );
+}
+
 class LoginController extends GetxController {
   final AuthRepository repository;
 
-  final GlobalKey formKey = GlobalKey<FormState>();
-  final RxString email = "".obs;
-  final RxString password = "".obs;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailTextFieldController =
+      TextEditingController();
+  final TextEditingController _passwordTextFieldController =
+      TextEditingController();
+
+  GlobalKey<FormState> get getFormKey => _formKey;
+  TextEditingController get getEmailController => _emailTextFieldController;
+  TextEditingController get getPasswordController =>
+      _passwordTextFieldController;
 
   LoginController({required this.repository});
 
-  String? validateEmail(String value) {
-    if (value.isEmpty) {
+  String? validateEmail() {
+    if (getEmailController.text.isEmpty) {
       return "Este campo não pode estar vazio!";
+    } else if (!getEmailController.text.isEmail) {
+      return "Digite o email corretamente.";
     }
 
     return null;
   }
 
-  String? validatePassword(String value) {
-    if (value.isEmpty) {
+  String? validatePassword() {
+    if (getPasswordController.text.isEmpty) {
       return "Este campo não pode estar vazio!";
-    } else if (value.length < 8) {
-      return "A senha deve conter no mínimo 8 caracteres.";
+    } else if (getPasswordController.text.length < 8) {
+      return "A senha deve conter no mínimo 08 caracteres.";
     }
 
     return null;
   }
 
-  void register() {
-    repository.register();
+  Future<void> loginWithEmailAndPass() async {
+    try {
+      await repository.loginWithEmailAndPass(
+        getEmailController.text,
+        getPasswordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "invalid-email":
+          _showAlert("Email ou senha inválidos. Verifique e tente novamente.");
+          break;
+        case "user-disabled":
+          _showAlert("Este usuário está desabilitado.");
+          break;
+        case "user-not-found":
+          _showAlert(
+              "Usuário não encontrado. Verifique se você já tem cadastro.");
+          break;
+        case "wrong-password":
+          _showAlert("Email ou senha inválidos. Verifique e tente novamente.");
+          break;
+        default:
+          _showAlert("${e.code} - ${e.message}");
+          break;
+      }
+    }
   }
 
-  void loginWithEmailAndPass() {
-    repository.loginWithEmailAndPass(email.value, password.value);
+  Future<void> loginWithGoogle() async {
+    try {
+      await repository.loginWithGoogle();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          _showAlert(
+            "Usuário já existente porém com outra credencial. Verifique se você realmente se cadastrou com o Google.",
+          );
+          break;
+        case "operation-not-allowed":
+          _showAlert(
+            "Operação não permitida. Tente novamente mais tarde.",
+          );
+          break;
+        case "invalid-credential":
+          _showAlert(
+            "Credenciais inválidas. Tente novamente mais tarde.",
+          );
+          break;
+        case "user-disabled":
+          _showAlert("Este usuário está desabilitado.");
+          break;
+        case "user-not-found":
+          _showAlert(
+              "Usuário não encontrado. Verifique se você já tem cadastro.");
+          break;
+        case "wrong-password":
+          _showAlert("Email ou senha inválidos. Verifique e tente novamente.");
+          break;
+        default:
+          _showAlert("${e.code} - ${e.message}");
+          break;
+      }
+    }
   }
 
-  void loginWithGoogle() {
-    repository.loginWithGoogle();
-  }
-
-  void loginWithApple() {
+  Future<void> loginWithApple() async {
     repository.loginWithApple();
   }
 
-  void logOut() {
-    repository.logOut();
+  Future<void> logOut() async {
+    await repository.logOut();
   }
 
   void resetPass() {}

@@ -11,7 +11,7 @@ class UserRepository {
     return provider.getCurrentUser();
   }
 
-  Future<void> updateUser(User userInstance, UserModel user) {
-    return provider.updateUser(userInstance, user);
+  Future<void> updateUser(User userInstance, UserModel user) async {
+    return await provider.updateUser(userInstance, user);
   }
 }

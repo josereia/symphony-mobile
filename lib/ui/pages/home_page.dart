@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:symphony/controller/pages/home_page_controller.dart';
-import 'package:symphony/ui/widgets/buttons/primary_button.dart';
+import 'package:symphony/routes/app_routes.dart';
 import 'package:symphony/ui/widgets/appbar_widget.dart';
 import 'package:symphony/ui/widgets/lists/album_list.dart';
 import 'package:symphony/ui/widgets/lists/artist_list.dart';
@@ -16,25 +14,32 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: "Home",
+        title: "Bem vindo!",
+        subtitle: controller.getUser?.name ?? "",
         actions: [
           SizedBox(
-            width: 50,
-            height: 50,
-            child: CircleAvatar(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: const Image(
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    "https://c.tenor.com/ir2nX96xSJUAAAAC/ghosts-my-profile.gif",
+              width: 50,
+              height: 50,
+              child: InkWell(
+                onTap: () => Get.toNamed(AppRoutes.profile),
+                child: Ink(
+                  child: CircleAvatar(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: controller.getUser?.photoURL != null
+                          ? Image(
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                controller.getUser!.photoURL!,
+                              ),
+                            )
+                          : const CircularProgressIndicator(),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
+              )),
         ],
       ),
       body: SingleChildScrollView(
@@ -66,13 +71,6 @@ class HomePage extends GetView<HomeController> {
                 data: controller.songs,
               ),
             ),
-            const SizedBox(height: 16),
-            PrimaryButton(
-              title: "Sair",
-              onPressed: () => log(
-                controller.songs.toString(),
-              ),
-            )
           ],
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class GoogleButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final String? title;
+  final String? text;
   final Color? backgroundColor;
   final Color? onPrimary;
   final Color? borderColor;
@@ -12,7 +12,7 @@ class GoogleButton extends StatelessWidget {
   const GoogleButton({
     super.key,
     required this.onPressed,
-    this.title,
+    this.text,
     this.backgroundColor,
     this.onPrimary,
     this.borderColor,
@@ -47,7 +47,7 @@ class GoogleButton extends StatelessWidget {
                 ),
           const SizedBox(width: 16),
           Text(
-            title ?? "Fazer login com o Google",
+            text ?? "Fazer login com o Google",
             style: TextStyle(color: textColor ?? Colors.black),
           )
         ],

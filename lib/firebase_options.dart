@@ -29,6 +29,16 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -42,6 +52,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '819828396310',
     projectId: 'symphony-61682',
     authDomain: 'symphony-61682.firebaseapp.com',
+    databaseURL: 'https://symphony-61682-default-rtdb.firebaseio.com',
     storageBucket: 'symphony-61682.appspot.com',
     measurementId: 'G-L2X48E8S83',
   );
@@ -51,6 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:819828396310:android:912e058b645bdc735c0037',
     messagingSenderId: '819828396310',
     projectId: 'symphony-61682',
+    databaseURL: 'https://symphony-61682-default-rtdb.firebaseio.com',
     storageBucket: 'symphony-61682.appspot.com',
   );
 
@@ -59,6 +71,7 @@ class DefaultFirebaseOptions {
     appId: '1:819828396310:ios:318c65d7413e126c5c0037',
     messagingSenderId: '819828396310',
     projectId: 'symphony-61682',
+    databaseURL: 'https://symphony-61682-default-rtdb.firebaseio.com',
     storageBucket: 'symphony-61682.appspot.com',
     androidClientId: '819828396310-sa88hv3g91phcon18cgmjndqd4th5kn8.apps.googleusercontent.com',
     iosClientId: '819828396310-be8ms9qdaqno0u66unj2rc2furrkm0o1.apps.googleusercontent.com',

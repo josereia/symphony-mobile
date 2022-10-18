@@ -5,12 +5,14 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(100);
 
   final String title;
+  final String? subtitle;
   final List<Widget>? actions;
 
   AppBarWidget({
     super.key,
     required this.title,
     this.actions,
+    this.subtitle,
   });
 
   @override
@@ -22,10 +24,25 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: Theme.of(context).appBarTheme.toolbarTextStyle,
-          ),
+          subtitle != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Text(
+                      subtitle ?? "vdffvfvd",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ],
+                )
+              : Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
           Row(
             children: actions ?? [],
           ),
