@@ -21,17 +21,17 @@ class FloatPlayer extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
         child: Container(
           height: 62,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
           color: context.theme.colorScheme.primary.withAlpha(200),
           child: Stack(
             children: [
               Obx(
                 () => Positioned(
-                  top: 1,
+                  top: 2,
                   left: 0,
                   right: 0,
-                  child: FractionallySizedBox(
-                    widthFactor: 1,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: ProgressBar(
                       progress: playerController.getPosition,
                       buffered: playerController.getBufferedPosition,

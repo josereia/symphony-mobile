@@ -5,15 +5,102 @@ import 'package:get/get.dart';
 import 'package:symphony/controller/player_controller.dart';
 import 'package:symphony/data/model/song_model.dart';
 import 'package:symphony/data/provider/api_provider.dart';
+import 'package:symphony/routes/app_routes.dart';
+
+class _LeadingWidget extends StatelessWidget {
+  final String album;
+  final String albumPicUrl;
+
+  const _LeadingWidget({required this.album, required this.albumPicUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: AspectRatio(
+        aspectRatio: 1 / 1,
+        child: CachedNetworkImage(
+          fit: BoxFit.cover,
+          useOldImageOnUrlChange: true,
+          cacheKey: album,
+          imageUrl: albumPicUrl,
+        ),
+      ),
+    );
+  }
+}
+
+class _TitleWidget extends StatelessWidget {
+  final String title;
+  final bool? active;
+
+  const _TitleWidget({required this.title, this.active});
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        overflow: TextOverflow.ellipsis,
+        style: active == true
+            ? theme.textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.primary,
+              )
+            : theme.textTheme.titleMedium?.copyWith(
+                color: theme.textTheme.bodySmall?.color,
+              ),
+      ),
+    );
+  }
+}
+
+class _SubtitleWidget extends StatelessWidget {
+  final String artists;
+  final bool? active;
+
+  const _SubtitleWidget({
+    required this.artists,
+    this.active,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        artists,
+        overflow: TextOverflow.ellipsis,
+        style: active == true
+            ? TextStyle(color: theme.colorScheme.primary)
+            : TextStyle(color: theme.textTheme.bodySmall?.color),
+      ),
+    );
+  }
+}
 
 class SongList extends StatelessWidget {
   final cloudinaryApi = Get.put(ApiProvider());
   final playerController = Get.find<PlayerController>();
 
   final String title;
-  final List<SongModel> data;
+  final List<SongModel> songs;
+  final List<SongModel> data = [];
+  final int? length;
 
-  SongList({super.key, required this.title, required this.data});
+  SongList({
+    super.key,
+    required this.title,
+    required this.songs,
+    this.length,
+  }) {
+    data.addAll(songs);
+    data.shuffle();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,64 +118,54 @@ class SongList extends StatelessWidget {
             ),
             IconButton(
               alignment: Alignment.centerRight,
-              onPressed: () {},
               icon: const Icon(FeatherIcons.chevronRight),
+              onPressed: () => Get.toNamed(
+                AppRoutes.songListSeeMorePage,
+                arguments: <String, dynamic>{"title": title, "data": data},
+              ),
             )
           ],
         ),
-        const SizedBox(height: 16),
         SizedBox(
-          height: 200,
-          child: ListView.separated(
+          height: 206,
+          child: ListView.builder(
+            itemCount: data.isNotEmpty && length != null ? length : data.length,
             scrollDirection: Axis.horizontal,
-            itemCount: data.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(width: 16),
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  playerController.play(data, index, title);
-                },
-                borderRadius: BorderRadius.circular(16),
+            itemBuilder: (context, index) => InkWell(
+              onTap: () => playerController.play(data, index, title),
+              borderRadius: BorderRadius.circular(16),
+              child: Ink(
+                width: 140 + 16,
+                padding: const EdgeInsets.all(6),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
-                        width: 140,
-                        height: 140,
-                        fit: BoxFit.cover,
-                        useOldImageOnUrlChange: true,
-                        cacheKey: data[index].album,
-                        imageUrl: cloudinaryApi.getAlbumPicURL(
-                          data[index].album,
-                        ),
+                    _LeadingWidget(
+                      album: data[index].album,
+                      albumPicUrl: cloudinaryApi.getAlbumPicURL(
+                        data[index].album,
                       ),
                     ),
                     const SizedBox(height: 6),
-                    SizedBox(
-                      width: 140,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
+                    Obx(
+                      () => _TitleWidget(
+                        title: data[index].title,
+                        active: playerController.getCurrentSong?.title ==
                             data[index].title,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          Text(
-                            data[index].artists.join(", "),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                      ),
+                    ),
+                    Obx(
+                      () => _SubtitleWidget(
+                        artists: data[index].artists.join(", "),
+                        active: playerController.getCurrentSong?.title ==
+                            data[index].title,
                       ),
                     ),
                   ],
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ),
       ],

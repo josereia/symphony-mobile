@@ -7,9 +7,12 @@ import 'package:symphony/binding/register_page_binding.dart';
 import 'package:symphony/binding/root_page_binding.dart';
 import 'package:symphony/binding/search_page_binding.dart';
 import 'package:symphony/routes/app_routes.dart';
+import 'package:symphony/ui/pages/album_list_see_more_page.dart';
 
 //pages
 import 'package:symphony/ui/pages/album_page.dart';
+import 'package:symphony/ui/pages/artist_list_see_more_page.dart';
+import 'package:symphony/ui/pages/song_list_see_more_page.dart';
 import 'package:symphony/ui/pages/home_page.dart';
 import 'package:symphony/ui/pages/library_page.dart';
 import 'package:symphony/ui/pages/login_page.dart';
@@ -66,6 +69,18 @@ class AppPages {
     GetPage(
       name: AppRoutes.profile,
       page: () => ProfilePage(),
+    ),
+    GetPage(
+      name: AppRoutes.songListSeeMorePage,
+      page: () => SongListSeeMorePage(),
+    ),
+    GetPage(
+      name: AppRoutes.albumListSeeMorePage,
+      page: () => AlbumListSeeMorePage(),
+    ),
+    GetPage(
+      name: AppRoutes.artistListSeeMorePage,
+      page: () => ArtistListSeeMorePage(),
     ),
   ];
 }
