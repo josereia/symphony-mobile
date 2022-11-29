@@ -3,6 +3,7 @@ import 'package:symphony/binding/album_page_binding.dart';
 import 'package:symphony/binding/home_page_binding.dart';
 import 'package:symphony/binding/library_page_binding.dart';
 import 'package:symphony/binding/login_page_binding.dart';
+import 'package:symphony/binding/profile_page_binding.dart';
 import 'package:symphony/binding/register_page_binding.dart';
 import 'package:symphony/binding/root_page_binding.dart';
 import 'package:symphony/binding/search_page_binding.dart';
@@ -66,6 +67,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.profile,
       page: () => ProfilePage(),
+      binding: ProfileBinding(),
     ),
   ];
 }
