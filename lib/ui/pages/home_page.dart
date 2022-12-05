@@ -18,28 +18,29 @@ class HomePage extends GetView<HomeController> {
         subtitle: controller.getUser?.name ?? "",
         actions: [
           SizedBox(
-              width: 50,
-              height: 50,
-              child: InkWell(
-                onTap: () => Get.toNamed(AppRoutes.profile),
-                child: Ink(
-                  child: CircleAvatar(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: controller.getUser?.photoURL != null
-                          ? Image(
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                controller.getUser!.photoURL!,
-                              ),
-                            )
-                          : const CircularProgressIndicator(),
-                    ),
+            width: 50,
+            height: 50,
+            child: InkWell(
+              onTap: () => Get.toNamed(AppRoutes.profile),
+              child: Ink(
+                child: CircleAvatar(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: controller.getUser?.photoURL != null
+                        ? Image(
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              controller.getUser!.photoURL!,
+                            ),
+                          )
+                        : const CircularProgressIndicator(),
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(

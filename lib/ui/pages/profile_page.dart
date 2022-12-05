@@ -4,7 +4,69 @@ import 'package:get/get.dart';
 import 'package:symphony/controller/auth_controller.dart';
 import 'package:symphony/controller/pages/profile_page_controller.dart';
 import 'package:symphony/ui/widgets/buttons/button_widget.dart';
-import 'package:symphony/ui/widgets/text_input.dart';
+
+class _HeaderWidget extends StatelessWidget {
+  final ProfileController controller = Get.find<ProfileController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 260,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Image.network(
+            "https://static.vecteezy.com/system/resources/previews/006/464/063/large_2x/abstract-equalizer-wave-design-music-sound-wave-element-waveform-with-neon-color-gradient-wavy-line-background-free-photo.jpg",
+            height: 200,
+            fit: BoxFit.cover,
+          ),
+          Positioned(
+            left: 16,
+            bottom: 60 - 50,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: InkWell(
+                    //onTap: () => Get.toNamed(AppRoutes.profile),
+                    child: Ink(
+                      child: CircleAvatar(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: controller.getUser?.photoURL != null
+                              ? Image(
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    controller.getUser!.photoURL!,
+                                  ),
+                                )
+                              : const CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Obx(
+                  () => controller.getUser?.name != null
+                      ? Text(
+                          controller.getUser!.name!,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        )
+                      : const CircularProgressIndicator(),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class ProfilePage extends GetView<ProfileController> {
   final AuthController _authController = Get.find<AuthController>();
@@ -14,71 +76,36 @@ class ProfilePage extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    String? name = controller.getUser?.name;
-    String email = controller.getUser?.email ?? '';
-    emailController.text = email;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Perfil"),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actionsIconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                width: 150,
-                height: 150,
-                child: InkWell(
-                  child: Ink(
-                    child: CircleAvatar(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(150),
-                        child: controller.getUser?.photoURL != null
-                            ? Image(
-                                width: 150,
-                                height: 150,
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  controller.getUser!.photoURL!,
-                                ),
-                              )
-                            : const CircularProgressIndicator(),
-                      ),
-                    ),
+      extendBodyBehindAppBar: true,
+      body: Column(
+        children: [
+          _HeaderWidget(),
+          const SizedBox(height: 16),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ButtonWidget(
+                    title: "Sair",
+                    prefixIcon: FeatherIcons.logOut,
+                    color: ButtonColors.error,
+                    onPressed: () => _authController.logOut(),
                   ),
-                ),
+                ],
               ),
-              Text(
-                name ?? '',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 24,
-                ),
-              ),
-              const Icon(
-                FeatherIcons.check,
-                color: Colors.green,
-              ),
-              TextInput(
-                hintText: 'E-mail',
-                controller: emailController,
-                readOnly: true,
-              ),
-              const SizedBox(height: 16),
-              ButtonWidget(
-                title: "Editar",
-                onPressed: () => _authController.logOut(),
-              ),
-              const SizedBox(height: 16),
-              ButtonWidget(
-                title: "Sair",
-                onPressed: () => _authController.logOut(),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
