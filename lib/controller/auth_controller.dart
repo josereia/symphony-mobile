@@ -15,10 +15,11 @@ class AuthController extends GetxController {
 
   @override
   void onReady() {
+    super.onReady();
+
     _user = Rx<User?>(_authInstance.currentUser);
     _user.bindStream(_authInstance.authStateChanges());
     ever(_user, _checkLogin);
-    super.onReady();
   }
 
   void _checkLogin(user) {

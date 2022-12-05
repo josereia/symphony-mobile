@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 enum ButtonColors {
   primary,
   secondary,
+  error,
 }
 
 class ButtonWidget extends StatelessWidget {
@@ -31,6 +32,8 @@ class ButtonWidget extends StatelessWidget {
           return theme.colorScheme.primary;
         case ButtonColors.secondary:
           return theme.colorScheme.secondary;
+           case ButtonColors.error:
+          return theme.colorScheme.error;
         default:
           return theme.colorScheme.primary;
       }

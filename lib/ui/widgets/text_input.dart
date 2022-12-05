@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
@@ -10,6 +12,7 @@ class TextInput extends StatelessWidget {
   final TextInputAction? textInputAction;
   final String hintText;
   final TextEditingController? controller;
+  final bool? readOnly;
 
   const TextInput({
     super.key,
@@ -21,6 +24,7 @@ class TextInput extends StatelessWidget {
     this.textInputAction,
     this.onChanged,
     this.controller,
+    this.readOnly,
     required this.hintText,
   });
 
@@ -28,6 +32,7 @@ class TextInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      readOnly: readOnly ?? false,
       keyboardType: inputType ?? TextInputType.text,
       textInputAction: textInputAction,
       style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
