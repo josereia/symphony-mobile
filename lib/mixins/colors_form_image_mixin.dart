@@ -9,5 +9,6 @@ mixin ColorsFromImage {
     return paletteGenerator.dominantColor?.color ??
         paletteGenerator.vibrantColor?.color ??
         paletteGenerator.mutedColor?.color;
+        
   }
 }
