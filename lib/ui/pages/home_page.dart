@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:symphony/controller/pages/home_page_controller.dart';
@@ -27,13 +28,13 @@ class HomePage extends GetView<HomeController> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
                     child: controller.getUser?.photoURL != null
-                        ? Image(
+                        ? CachedNetworkImage(
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                              controller.getUser!.photoURL!,
-                            ),
+                            useOldImageOnUrlChange: true,
+                            cacheKey: "profile_pic",
+                            imageUrl: controller.getUser!.photoURL!,
                           )
                         : const CircularProgressIndicator(),
                   ),

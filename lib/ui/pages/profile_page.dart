@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -10,15 +11,18 @@ class _HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 260,
+    return SizedBox.fromSize(
+      size: const Size.fromHeight(260),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Image.network(
-            "https://static.vecteezy.com/system/resources/previews/006/464/063/large_2x/abstract-equalizer-wave-design-music-sound-wave-element-waveform-with-neon-color-gradient-wavy-line-background-free-photo.jpg",
+          CachedNetworkImage(
             height: 200,
             fit: BoxFit.cover,
+            useOldImageOnUrlChange: true,
+            cacheKey: "cover_pic",
+            imageUrl:
+                "https://static.vecteezy.com/system/resources/previews/006/464/063/large_2x/abstract-equalizer-wave-design-music-sound-wave-element-waveform-with-neon-color-gradient-wavy-line-background-free-photo.jpg",
           ),
           Positioned(
             left: 16,
@@ -36,13 +40,13 @@ class _HeaderWidget extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: controller.getUser?.photoURL != null
-                              ? Image(
+                              ? CachedNetworkImage(
                                   width: 100,
                                   height: 100,
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    controller.getUser!.photoURL!,
-                                  ),
+                                  useOldImageOnUrlChange: true,
+                                  cacheKey: "profile_pic",
+                                  imageUrl: controller.getUser!.photoURL!,
                                 )
                               : const CircularProgressIndicator(),
                         ),

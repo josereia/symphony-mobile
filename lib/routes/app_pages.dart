@@ -27,6 +27,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.initial,
       page: () => RootPage(),
+      maintainState: true,
       bindings: [
         RootBinding(),
         HomeBinding(),
