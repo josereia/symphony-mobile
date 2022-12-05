@@ -7,4 +7,7 @@ abstract class AppRoutes {
   static const String library = '/library';
   static const String albumPage = '/albumPage';
   static const String profile = '/profile';
+  static const String songListSeeMorePage = '/songListSeeMorePage';
+  static const String albumListSeeMorePage = '/albumListSeeMorePage';
+  static const String artistListSeeMorePage = '/artistListSeeMorePage';
 }

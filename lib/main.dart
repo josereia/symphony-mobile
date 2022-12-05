@@ -40,6 +40,7 @@ Future<void> main() async {
     androidNotificationChannelName: 'symphony',
     androidNotificationOngoing: true,
     androidNotificationIcon: 'mipmap/ic_launcher',
+    preloadArtwork: true,
   );
 
   runApp(const MyApp());

@@ -266,7 +266,7 @@ class _List extends StatelessWidget {
 }
 
 class AlbumPage extends GetView<AlbumPageController> {
-  final SongModel albumData = Get.arguments as SongModel;
+  final SongModel albumData = Get.arguments["album"];
 
   AlbumPage({super.key});
 
