@@ -1,22 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class SongModel {
-  late String title;
-  late List artists;
-  late String album;
-  late int duration;
+  final String id;
+  final String title;
+  final Duration duration;
+  final String author;
+  final Uri url;
+  final Uri thumbnail;
 
   SongModel({
+    required this.id,
+    required this.url,
+    required this.author,
     required this.title,
-    required this.artists,
-    required this.album,
     required this.duration,
+    required this.thumbnail,
   });
-
-  SongModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
-    title = documentSnapshot["title"];
-    artists = documentSnapshot["artists"];
-    album = documentSnapshot["album"];
-    duration = documentSnapshot["duration"];
-  }
 }

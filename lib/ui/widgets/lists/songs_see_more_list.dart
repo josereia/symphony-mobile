@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:symphony/controller/player_controller.dart';
-import 'package:symphony/data/model/song_model.dart';
-import 'package:symphony/data/provider/api_provider.dart';
+import 'package:symphony/data/model/playlist_model.dart';
 
 class _LeadingWidget extends StatelessWidget {
-  final String album;
-  final String albumPicUrl;
+  final String cacheKey;
+  final Uri thumbnail;
 
-  const _LeadingWidget({required this.album, required this.albumPicUrl});
+  const _LeadingWidget({
+    required this.cacheKey,
+    required this.thumbnail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +23,8 @@ class _LeadingWidget extends StatelessWidget {
         child: CachedNetworkImage(
           fit: BoxFit.cover,
           useOldImageOnUrlChange: true,
-          cacheKey: album,
-          imageUrl: albumPicUrl,
+          cacheKey: cacheKey,
+          imageUrl: thumbnail.toString(),
         ),
       ),
     );
@@ -31,9 +33,9 @@ class _LeadingWidget extends StatelessWidget {
 
 class _TitleWidget extends StatelessWidget {
   final String title;
-  final bool? active;
+  final bool? isActive;
 
-  const _TitleWidget({required this.title, this.active});
+  const _TitleWidget({required this.title, this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class _TitleWidget extends StatelessWidget {
     return Text(
       title,
       overflow: TextOverflow.ellipsis,
-      style: active == true
+      style: isActive == true
           ? TextStyle(color: theme.colorScheme.primary)
           : TextStyle(color: theme.textTheme.bodySmall?.color),
     );
@@ -50,14 +52,12 @@ class _TitleWidget extends StatelessWidget {
 }
 
 class _SubtitleWidget extends StatelessWidget {
-  final String album;
-  final String artists;
-  final bool? active;
+  final String author;
+  final bool? isActive;
 
   const _SubtitleWidget({
-    required this.album,
-    required this.artists,
-    this.active,
+    required this.author,
+    this.isActive,
   });
 
   Widget getTextWidget(BuildContext context, String text) {
@@ -66,7 +66,7 @@ class _SubtitleWidget extends StatelessWidget {
     return Text(
       text,
       overflow: TextOverflow.ellipsis,
-      style: active == true
+      style: isActive == true
           ? TextStyle(color: theme.colorScheme.primary)
           : TextStyle(color: theme.textTheme.bodySmall?.color),
     );
@@ -77,8 +77,7 @@ class _SubtitleWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        getTextWidget(context, album),
-        getTextWidget(context, artists),
+        getTextWidget(context, author),
       ],
     );
   }
@@ -87,17 +86,15 @@ class _SubtitleWidget extends StatelessWidget {
 class _TrailingWidget extends StatelessWidget {
   final playerController = Get.find<PlayerController>();
 
-  final List<SongModel> data;
+  final PlaylistModel playlist;
   final int index;
-  final String title;
-  final bool? active;
+  final bool? isActive;
   final bool? isPlaying;
 
   _TrailingWidget({
-    required this.data,
+    required this.playlist,
     required this.index,
-    required this.title,
-    this.active,
+    this.isActive,
     this.isPlaying,
   });
 
@@ -106,15 +103,12 @@ class _TrailingWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return IconButton(
-      color: active == true ? theme.colorScheme.primary : theme.iconTheme.color,
-      onPressed: () => active == true
+      color:
+          isActive == true ? theme.colorScheme.primary : theme.iconTheme.color,
+      onPressed: () => isActive == true
           ? playerController.playPause()
-          : playerController.play(
-              data,
-              index,
-              title,
-            ),
-      icon: active == true
+          : playerController.play(playlist: playlist, index: index),
+      icon: isActive == true
           ? isPlaying == true
               ? const Icon(FeatherIcons.pause)
               : const Icon(FeatherIcons.play)
@@ -125,51 +119,50 @@ class _TrailingWidget extends StatelessWidget {
 
 class SongsSeeMoreList extends StatelessWidget {
   final playerController = Get.find<PlayerController>();
-  final cloudinaryApi = Get.put<ApiProvider>(ApiProvider());
 
-  final String title;
-  final List<SongModel> data;
+  final PlaylistModel playlist;
 
   SongsSeeMoreList({
     super.key,
-    required this.title,
-    required this.data,
+    required this.playlist,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) => ListTile(
-        contentPadding: const EdgeInsets.all(0),
-        isThreeLine: true,
-        onTap: () => playerController.play(data, index, title),
-        leading: _LeadingWidget(
-          album: data[index].album,
-          albumPicUrl: cloudinaryApi.getAlbumPicURL(data[index].album),
-        ),
-        title: Obx(
-          () => _TitleWidget(
-            title: data[index].title,
-            active: playerController.getCurrentSong?.title == data[index].title,
-          ),
-        ),
-        subtitle: Obx(
-          () => _SubtitleWidget(
-            album: data[index].album,
-            artists: data[index].artists.join(", "),
-            active: playerController.getCurrentSong?.title == data[index].title,
-          ),
-        ),
-        trailing: Obx(
-          () => _TrailingWidget(
-            data: data,
-            index: index,
-            title: title,
-            active: playerController.getCurrentSong?.title == data[index].title,
-            isPlaying: playerController.getIsPlaying,
-          ),
-        ),
+      itemCount: playlist.songs.length,
+      itemBuilder: (context, index) => Obx(
+        () {
+          final bool isActive = playerController.getCurrentSong?.title ==
+              playlist.songs[index].title;
+
+          return ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            isThreeLine: true,
+            onTap: () => playerController.play(
+              playlist: playlist,
+              index: index,
+            ),
+            leading: _LeadingWidget(
+              cacheKey: playlist.songs[index].author,
+              thumbnail: playlist.songs[index].thumbnail,
+            ),
+            title: _TitleWidget(
+              title: playlist.songs[index].title,
+              isActive: isActive,
+            ),
+            subtitle: _SubtitleWidget(
+              author: playlist.songs[index].author,
+              isActive: isActive,
+            ),
+            trailing: _TrailingWidget(
+              playlist: playlist,
+              index: index,
+              isActive: isActive,
+              isPlaying: playerController.getIsPlaying,
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:symphony/data/model/playlist_model.dart';
+//import 'package:just_audio_background/just_audio_background.dart';
 import 'package:symphony/data/model/song_model.dart';
-import 'package:symphony/data/provider/api_provider.dart';
-import 'package:home_widget/home_widget.dart';
+//import 'package:home_widget/home_widget.dart';
 
 class PlayerController extends GetxController {
   final _audioPlayer = AudioPlayer();
-  final _cloudinaryApi = Get.put(ApiProvider());
   final Rx<Duration?> _duration = const Duration(milliseconds: 0).obs;
   final Rx<Duration> _position = const Duration(milliseconds: 0).obs;
   final Rx<Duration> _bufferedPosition = const Duration(milliseconds: 0).obs;
@@ -18,10 +18,12 @@ class PlayerController extends GetxController {
   final Rx<SongModel?> _currentSong = Rx(null);
   final RxList<SongModel> _data = [
     SongModel(
+      id: "",
       title: "",
-      artists: [""],
-      album: "",
-      duration: 0,
+      duration: const Duration(milliseconds: 0),
+      url: Uri(),
+      author: "",
+      thumbnail: Uri(),
     )
   ].obs;
 
@@ -35,7 +37,7 @@ class PlayerController extends GetxController {
   bool get getIsLoop => _isLoop.value;
   String get getPlaylistTitle => _playlistTitle.value;
 
-  Future<void> _updateAppWidget() async {
+  /*Future<void> _updateAppWidget() async {
     await HomeWidget.saveWidgetData<String>(
       "_songTitle",
       _currentSong.value?.title ?? "",
@@ -52,14 +54,14 @@ class PlayerController extends GetxController {
       name: "PlayerWidgetProvider",
       iOSName: "PlayerWidgetProvider",
     );
-  }
+  }*/
 
   @override
   void onInit() {
     _audioPlayer.currentIndexStream.listen((event) {
       if (event != null) {
         _currentSong.value = _data[event];
-        _updateAppWidget();
+        // _updateAppWidget();
       }
     });
     _audioPlayer.durationStream.listen((event) {
@@ -87,34 +89,27 @@ class PlayerController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-
     _audioPlayer.dispose();
   }
 
-  void play(List<SongModel> songs, int index, String playlistTitle) async {
-    _data.value = songs;
-    _playlistTitle.value = playlistTitle;
+  void play({required PlaylistModel playlist, required int index}) async {
+    _data.value = playlist.songs;
+    _playlistTitle.value = playlist.title;
 
     await _audioPlayer
         .setAudioSource(
       ConcatenatingAudioSource(
-        children: songs
+        useLazyPreparation: true,
+        children: playlist.songs
             .map(
               (e) => AudioSource.uri(
-                Uri.parse(
-                  _cloudinaryApi.getSongURL(
-                    e.title,
-                    e.artists[0],
-                  ),
-                ),
+                e.url,
                 tag: MediaItem(
-                  id: e.title,
-                  album: e.album,
+                  id: e.id,
                   title: e.title,
-                  artist: e.artists.join(", "),
-                  artUri: Uri.parse(
-                    _cloudinaryApi.getAlbumPicURL(e.album),
-                  ),
+                  artist: e.author,
+                  duration: e.duration,
+                  artUri: e.thumbnail,
                 ),
               ),
             )
@@ -125,7 +120,7 @@ class PlayerController extends GetxController {
         .then(
       (value) {
         _currentSong.value = _data[index];
-        _updateAppWidget();
+        //_updateAppWidget();
         _audioPlayer.play();
       },
     );

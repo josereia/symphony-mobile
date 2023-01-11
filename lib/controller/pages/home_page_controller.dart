@@ -1,24 +1,26 @@
 import 'package:get/get.dart';
-import 'package:symphony/data/model/song_model.dart';
-import 'package:symphony/data/model/user_model.dart';
+import 'package:symphony/data/model/playlist_model.dart';
 import 'package:symphony/data/repository/home_page_repository.dart';
 
 class HomeController extends GetxController {
   final HomePageRepository repository;
 
-  final Rx<UserModel?> _user = Rx(null);
-  Rx<List<SongModel>> songsList = Rx<List<SongModel>>([]);
+  final Rx<List<PlaylistModel>?> _playlists = Rx<List<PlaylistModel>?>(null);
 
-  List<SongModel> get songs => songsList.value;
-  UserModel? get getUser => _user.value;
+  List<PlaylistModel>? get songs => _playlists.value;
 
   HomeController({required this.repository});
 
   @override
-  void onInit() {
-    _user.value = repository.getCurrentUser();
-
-    songsList.bindStream(repository.songsStream());
+  Future<void> onInit() async {
     super.onInit();
+
+    final playlist = await repository.getPlaylists();
+
+    if (playlist != null) {
+      _playlists.value = [];
+      _playlists.value?.add(playlist);
+      _playlists.refresh();
+    }
   }
 }

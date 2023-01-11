@@ -2,16 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:symphony/data/provider/api_provider.dart';
-
 import 'package:symphony/controller/player_controller.dart';
 
 class ModalPlayer extends StatelessWidget {
   final playerController = Get.find<PlayerController>();
-  final cloudinaryApi = Get.put<ApiProvider>(ApiProvider());
 
   ModalPlayer({super.key});
 
@@ -65,10 +61,10 @@ class ModalPlayer extends StatelessWidget {
                                   fit: BoxFit.cover,
                                   useOldImageOnUrlChange: true,
                                   cacheKey:
-                                      playerController.getCurrentSong!.album,
-                                  imageUrl: cloudinaryApi.getAlbumPicURL(
-                                    playerController.getCurrentSong!.album,
-                                  ),
+                                      playerController.getCurrentSong!.title,
+                                  imageUrl: playerController
+                                      .getCurrentSong!.thumbnail
+                                      .toString(),
                                 )
                               : const CircularProgressIndicator(),
                         ),
@@ -90,8 +86,7 @@ class ModalPlayer extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
-                              playerController.getCurrentSong!.artists
-                                  .join(", "),
+                              playerController.getCurrentSong!.author,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],

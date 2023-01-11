@@ -4,14 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import '../../controller/player_controller.dart';
-import '../../data/provider/api_provider.dart';
+import 'package:symphony/controller/player_controller.dart';
 
-class FloatPlayer extends StatelessWidget {
-  final playerController = Get.find<PlayerController>();
-  final cloudinaryApi = Get.put(ApiProvider());
-
-  FloatPlayer({super.key});
+class FloatPlayer extends GetView<PlayerController> {
+  const FloatPlayer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +29,8 @@ class FloatPlayer extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: ProgressBar(
-                      progress: playerController.getPosition,
-                      buffered: playerController.getBufferedPosition,
+                      progress: controller.getPosition,
+                      buffered: controller.getBufferedPosition,
                       timeLabelLocation: TimeLabelLocation.none,
                       barCapShape: BarCapShape.round,
                       barHeight: 1,
@@ -42,7 +38,7 @@ class FloatPlayer extends StatelessWidget {
                       progressBarColor: Colors.white,
                       thumbColor: Colors.white,
                       baseBarColor: Colors.grey.withAlpha(200),
-                      total: playerController.getDuration ??
+                      total: controller.getDuration ??
                           const Duration(
                             milliseconds: 0,
                           ),
@@ -62,15 +58,16 @@ class FloatPlayer extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: Obx(
-                            () => playerController.getCurrentSong?.album != null
+                            () => controller.getCurrentSong?.author != null
                                 ? CachedNetworkImage(
                                     width: 50,
                                     height: 50,
                                     fit: BoxFit.cover,
                                     useOldImageOnUrlChange: true,
-                                    imageUrl: cloudinaryApi.getAlbumPicURL(
-                                      playerController.getCurrentSong!.album,
-                                    ),
+                                    cacheKey: controller.getCurrentSong!.title,
+                                    imageUrl: controller
+                                        .getCurrentSong!.thumbnail
+                                        .toString(),
                                   )
                                 : const CircularProgressIndicator(),
                           ),
@@ -78,15 +75,14 @@ class FloatPlayer extends StatelessWidget {
                         const SizedBox(width: 16),
                         Obx(
                           () => Flexible(
-                            child: playerController.getCurrentSong?.title !=
-                                    null
+                            child: controller.getCurrentSong?.title != null
                                 ? Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        playerController.getCurrentSong!.title,
+                                        controller.getCurrentSong!.title,
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context)
                                             .textTheme
@@ -100,8 +96,7 @@ class FloatPlayer extends StatelessWidget {
                                             ),
                                       ),
                                       Text(
-                                        playerController
-                                            .getCurrentSong!.artists[0],
+                                        controller.getCurrentSong!.author,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: context.theme.colorScheme
@@ -123,9 +118,9 @@ class FloatPlayer extends StatelessWidget {
                     children: [
                       Obx(
                         () => IconButton(
-                          onPressed: () => playerController.playPause(),
+                          onPressed: () => controller.playPause(),
                           icon: Icon(
-                            playerController.getIsPlaying
+                            controller.getIsPlaying
                                 ? FeatherIcons.pauseCircle
                                 : FeatherIcons.playCircle,
                             color: context.theme.colorScheme.brightness ==
@@ -136,7 +131,7 @@ class FloatPlayer extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => playerController.next(),
+                        onPressed: () => controller.next(),
                         icon: Icon(
                           FeatherIcons.skipForward,
                           color: context.theme.colorScheme.brightness ==
