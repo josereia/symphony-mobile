@@ -38,15 +38,17 @@ class RootPage extends GetView<RootController> {
                 left: 4,
                 right: 4,
                 child: InkWell(
-                  onTap: () => showCupertinoModalBottomSheet(
+                  onTap: () => showMaterialModalBottomSheet(
                     context: context,
                     expand: true,
                     bounce: true,
-                    topRadius: const Radius.circular(16),
+                    useRootNavigator: true,
+
+                    //topRadius: const Radius.circular(16),
                     builder: (context) => ModalPlayer(),
                     duration: const Duration(milliseconds: 200),
                   ),
-                  child: FloatPlayer(),
+                  child: const FloatPlayer(),
                 ),
               ),
             ),

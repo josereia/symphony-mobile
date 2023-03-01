@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:symphony/data/model/playlist_model.dart';
 //import 'package:just_audio_background/just_audio_background.dart';
 import 'package:symphony/data/model/song_model.dart';
+import 'package:video_player/video_player.dart';
 //import 'package:home_widget/home_widget.dart';
 
 class PlayerController extends GetxController {
@@ -16,16 +20,23 @@ class PlayerController extends GetxController {
   final RxBool _isLoop = false.obs;
   final RxString _playlistTitle = "".obs;
   final Rx<SongModel?> _currentSong = Rx(null);
-  final RxList<SongModel> _data = [
+  final Rx<FlickManager?> _videoPlayerController = Rx(null);
+  final VideoPlayerOptions _videoPlayerOptions = VideoPlayerOptions(
+    mixWithOthers: true,
+    allowBackgroundPlayback: true,
+  );
+
+  final Rx<List<SongModel>> _data = Rx([
     SongModel(
       id: "",
       title: "",
       duration: const Duration(milliseconds: 0),
-      url: Uri(),
+      audio: Uri(),
+      video: Uri(),
       author: "",
       thumbnail: Uri(),
     )
-  ].obs;
+  ]);
 
   //getters
   SongModel? get getCurrentSong => _currentSong.value;
@@ -36,6 +47,7 @@ class PlayerController extends GetxController {
   bool get getIsShuffle => _isShuffle.value;
   bool get getIsLoop => _isLoop.value;
   String get getPlaylistTitle => _playlistTitle.value;
+  FlickManager? get getVideoPlayerController => _videoPlayerController.value;
 
   /*Future<void> _updateAppWidget() async {
     await HomeWidget.saveWidgetData<String>(
@@ -56,12 +68,33 @@ class PlayerController extends GetxController {
     );
   }*/
 
+  Future<void> _loadVideo() async {
+    await _videoPlayerController.value?.handleChangeVideo(
+      VideoPlayerController.network(
+        _currentSong.value!.video.toString(),
+        videoPlayerOptions: _videoPlayerOptions,
+      ),
+    );
+    _videoPlayerController.value?.flickControlManager?.play();
+  }
+
   @override
   void onInit() {
-    _audioPlayer.currentIndexStream.listen((event) {
+    super.onInit();
+
+    _videoPlayerController.value = FlickManager(
+      videoPlayerController: VideoPlayerController.network(
+        "",
+        videoPlayerOptions: _videoPlayerOptions,
+      ),
+    );
+
+    _audioPlayer.currentIndexStream.listen((event) async {
       if (event != null) {
-        _currentSong.value = _data[event];
+        _currentSong.value = _data.value[event];
+
         // _updateAppWidget();
+        await _loadVideo().then((value) => _audioPlayer.play());
       }
     });
     _audioPlayer.durationStream.listen((event) {
@@ -70,7 +103,7 @@ class PlayerController extends GetxController {
     _audioPlayer.bufferedPositionStream.listen((event) {
       _bufferedPosition.value = event;
     });
-    _audioPlayer.positionStream.listen((event) {
+    _audioPlayer.positionStream.listen((event) async {
       _position.value = event;
     });
     _audioPlayer.shuffleModeEnabledStream.listen((event) {
@@ -82,56 +115,53 @@ class PlayerController extends GetxController {
     _audioPlayer.loopModeStream.listen((event) {
       _isLoop.value = (event == LoopMode.one ? true : false);
     });
-
-    super.onInit();
   }
 
   @override
   void onClose() {
     super.onClose();
     _audioPlayer.dispose();
+    _videoPlayerController.value?.dispose();
   }
 
   void play({required PlaylistModel playlist, required int index}) async {
     _data.value = playlist.songs;
     _playlistTitle.value = playlist.title;
+    _currentSong.value = _data.value[index];
 
-    await _audioPlayer
-        .setAudioSource(
+    final songs = _data.value
+        .map(
+          (e) => AudioSource.uri(
+            e.audio,
+            tag: MediaItem(
+              id: e.id,
+              title: e.title,
+              artist: e.author,
+              duration: e.duration,
+              artUri: e.thumbnail,
+            ),
+          ),
+        )
+        .toList();
+
+    await _audioPlayer.setAudioSource(
       ConcatenatingAudioSource(
         useLazyPreparation: true,
-        children: playlist.songs
-            .map(
-              (e) => AudioSource.uri(
-                e.url,
-                tag: MediaItem(
-                  id: e.id,
-                  title: e.title,
-                  artist: e.author,
-                  duration: e.duration,
-                  artUri: e.thumbnail,
-                ),
-              ),
-            )
-            .toList(),
+        children: songs,
       ),
       initialIndex: index,
-    )
-        .then(
-      (value) {
-        _currentSong.value = _data[index];
-        //_updateAppWidget();
-        _audioPlayer.play();
-      },
+      initialPosition: const Duration(milliseconds: 0),
     );
   }
 
-  void next() {
-    _audioPlayer.seekToNext();
+  Future<void> next() async {
+    await _audioPlayer.pause();
+    await _audioPlayer.seekToNext();
   }
 
-  void previous() {
-    _audioPlayer.seekToPrevious();
+  Future<void> previous() async {
+    await _audioPlayer.pause();
+    await _audioPlayer.seekToPrevious();
   }
 
   void repeat() {
@@ -153,8 +183,10 @@ class PlayerController extends GetxController {
   void playPause() {
     if (getIsPlaying) {
       _audioPlayer.pause();
+      _videoPlayerController.value?.flickControlManager?.pause();
     } else {
       _audioPlayer.play();
+      _videoPlayerController.value?.flickControlManager?.play();
     }
   }
 
@@ -162,7 +194,20 @@ class PlayerController extends GetxController {
     _audioPlayer.stop();
   }
 
-  void seekTo(position) {
+  Future<void> _seekVideo() async {
+    await _videoPlayerController.value?.flickControlManager?.seekTo(
+      _audioPlayer.position,
+    );
+  }
+
+  void seekTo(position) async {
+    _audioPlayer.pause();
+    _videoPlayerController.value?.flickControlManager?.pause();
     _audioPlayer.seek(position);
+    _seekVideo().then((value) {
+      sleep(const Duration(milliseconds: 500));
+      _videoPlayerController.value?.flickControlManager?.play();
+      _audioPlayer.play();
+    });
   }
 }

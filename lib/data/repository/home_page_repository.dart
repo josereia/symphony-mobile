@@ -1,15 +1,14 @@
 import 'package:symphony/data/model/playlist_model.dart';
-
-import '../provider/database_provider.dart';
+import 'package:symphony/data/provider/songs_provider.dart';
 
 class HomePageRepository {
-  final DatabaseProvider databaseProvider;
+  final SongsProvider databaseProvider;
 
   HomePageRepository({
     required this.databaseProvider,
   });
 
-  Future<PlaylistModel?> getPlaylists() async {
-    return await databaseProvider.getPlaylists();
+  Future<PlaylistModel?> getPlaylist({required String id}) async {
+    return await databaseProvider.getPlaylist(id: id);
   }
 }

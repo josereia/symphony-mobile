@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:symphony/controller/pages/home_page_controller.dart';
+import 'package:symphony/data/model/playlist_model.dart';
 import 'package:symphony/ui/widgets/appbar_widget.dart';
 import 'package:symphony/ui/widgets/lists/song_list.dart';
 
@@ -22,11 +23,17 @@ class HomePage extends GetView<HomeController> {
           children: [
             Obx(
               () => Visibility(
-                visible: controller.songs != null,
+                visible: controller.getPlaylists != null,
                 replacement: const CircularProgressIndicator(),
-                child: controller.songs != null
-                    ? SongList(playlist: controller.songs![0])
-                    : Container(),
+                child: Column(
+                  children: [
+                    for (PlaylistModel? playlist
+                        in controller.getPlaylists ?? [])
+                      playlist != null
+                          ? SongList(playlist: playlist)
+                          : Container(),
+                  ],
+                ),
               ),
             ),
           ],

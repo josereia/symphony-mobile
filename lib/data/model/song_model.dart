@@ -3,12 +3,14 @@ class SongModel {
   final String title;
   final Duration duration;
   final String author;
-  final Uri url;
+  final Uri audio;
+  final Uri video;
   final Uri thumbnail;
 
   SongModel({
     required this.id,
-    required this.url,
+    required this.audio,
+    required this.video,
     required this.author,
     required this.title,
     required this.duration,
